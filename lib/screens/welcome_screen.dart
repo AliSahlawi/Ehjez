@@ -53,7 +53,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   textStyle: TextStyle(
                     color: kTextColor,
                     fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
+                    fontFamily: "Sukar"
+                    //fontWeight: FontWeight.w900,
                   ),
                 ),
               ],
