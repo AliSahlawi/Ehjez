@@ -1,3 +1,4 @@
+import 'package:ehjez/screens/booking_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class Ehjez extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: booking_screen(),
       routes: {
         SplashScreen.id :(context) => SplashScreen(),
         OnBoardingScreen.id :(context) => OnBoardingScreen(),

@@ -80,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (user != null) {
                       //Navigator.pushNamed(context, AnyScreen.id);
                       print(user.user?.email);
+                      print(password);
                     }
                   } catch (e) {
                     print(e);
