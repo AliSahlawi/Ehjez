@@ -1,9 +1,18 @@
 import 'package:badges/badges.dart';
 import 'package:ehjez/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ehjez/Services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class booking_screen extends StatelessWidget {
+
+class booking_screen extends StatefulWidget {
+  @override
+  State<booking_screen> createState() => _booking_screenState();
+}
+
+class _booking_screenState extends State<booking_screen> {
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -16,7 +25,7 @@ class booking_screen extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () { },
             icon: Icon(
               Icons.arrow_back,
               color: kTextColor,
@@ -24,7 +33,7 @@ class booking_screen extends StatelessWidget {
           ),
           actions: <Widget>[
             IconButton(
-                onPressed: () {},
+                onPressed: () { DatabaseService().getData();},
                 icon: Icon(
                   Icons.favorite_border,
                   color: Colors.grey,
@@ -32,15 +41,25 @@ class booking_screen extends StatelessWidget {
                 ))
           ],
         ),
-        body: Column(
+        body: ListView(
+          scrollDirection: Axis.vertical,
+        children:[ Column(
           children: <Widget>[
-            Column(children: const [
-              Text("Destination",
-                  style: TextStyle(
-                    color: kTextColor,
-                    fontSize: 24.0,
-                  ))
-            ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 230, 0),
+                child: Text("Destination",
+                    style: TextStyle(
+                      color: kTextColor,
+                      fontSize: 26.0,
+
+                    )
+                ),
+              )
+            ]
+            ),
             Column(
               children: [
                 Row(
@@ -50,15 +69,22 @@ class booking_screen extends StatelessWidget {
                         image: AssetImage("assets/images/locate_park.png"),
                         height: 150,
                         width: 150),
+                    SizedBox(width: 20),
                     Expanded(
                         child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "City Center Mall",
-                          style: TextStyle(
-                            color: kTextColor,
-                            fontSize: 25,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+
+                      children:  [
+                        Container(
+                         // margin: EdgeInsets.fromLTRB(0, 0, 46, 10),
+
+                          child: Text(
+                              "City Center",
+                            style: TextStyle(
+                              color: kTextColor,
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                         Text(
@@ -77,14 +103,20 @@ class booking_screen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
-                    children: const [
-                      Text(
-                        "Arriving",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                    children:  [
+                      Container(
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Text(
+                          "Arriving",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
-                      Text(
-                        "Time",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Text(
+                          "Time",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
                       )
                     ],
                   ),
@@ -94,14 +126,20 @@ class booking_screen extends StatelessWidget {
                       shape: BadgeShape.square,
                       borderRadius: BorderRadius.circular(20)),
                   Column(
-                    children: const [
-                      Text(
-                        "Leaving",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                    children:  [
+                      Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Text(
+                          "Leaving",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
-                      Text(
-                        "Time",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Text(
+                          "Time",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
                       )
                     ],
                   ),
@@ -113,12 +151,15 @@ class booking_screen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      "Vehicle",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 30, 60, 10),
+                      child: Text(
+                        "Vehicle",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(0, 30, 50, 0),
+                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: Text(
                         "vehicle",
                         style: TextStyle(color: Colors.grey, fontSize: 14),
@@ -130,12 +171,13 @@ class booking_screen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 85, 20),
+                       margin: EdgeInsets.fromLTRB(0, 10, 90, 10),
                       child: Text(
                         "Type",
                         style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
+
                     Text(
                       "sedan",
                       style: TextStyle(color: Colors.grey, fontSize: 14),
@@ -144,16 +186,26 @@ class booking_screen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      "Plate Number",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                  children:  [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Text(
+                        "Plate Number",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
                     ),
                     Text(
                       "00000",
                       style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
+
                   ],
+
+                ),
+                Divider(
+
+                  color: Colors.grey,
+                  thickness: 1,
                 )
               ],
             ),
@@ -183,8 +235,39 @@ class booking_screen extends StatelessWidget {
 
                 ],
               ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 210,0),
+                child: Text("Description",
+                style: TextStyle(
+                  fontSize: 26,
+                  color: kTextColor,
+                ),
+                )
+            ),
+            Container(
+
+                margin: EdgeInsets.fromLTRB(0, 20, 210,0),
+                child: Text(
+                  "text text text",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                )
+            ),
+            SizedBox(height: 20,),
+            Divider(
+
+              color: Colors.grey,
+              thickness: 1,
             )
           ],
-        ));
+
+        )
+    ])
+    );
   }
 }
+
+
