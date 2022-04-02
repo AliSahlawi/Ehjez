@@ -6,12 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 
-class booking_screen extends StatefulWidget {
+class BookingScreen extends StatefulWidget {
+  static String id = 'booking_screen';
   @override
-  State<booking_screen> createState() => _booking_screenState();
+  State<BookingScreen> createState() => _BookingScreenState();
 }
 
-class _booking_screenState extends State<booking_screen> {
+class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {

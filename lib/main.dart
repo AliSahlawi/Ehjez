@@ -1,4 +1,5 @@
 import 'package:ehjez/screens/booking_screen.dart';
+import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +27,15 @@ class Ehjez extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: booking_screen(),
+      home: SplashScreen(),
       routes: {
         SplashScreen.id :(context) => SplashScreen(),
         OnBoardingScreen.id :(context) => OnBoardingScreen(),
         WelcomeScreen.id : (context) => WelcomeScreen(),
         LoginScreen.id :(context) => LoginScreen(),
         RegistrationScreen.id:(context) => RegistrationScreen(),
+        MapScreen.id:(context) => MapScreen(),
+        BookingScreen.id:(context) => BookingScreen()
       },
     );
   }
