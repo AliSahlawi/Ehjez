@@ -1,9 +1,13 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'map_screen.dart';
 // ignore_for_file: prefer_const_constructors
 
 class LoginScreen extends StatefulWidget {
@@ -18,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String email = "";
   String password = "";
-  bool showSpinner = false;
+
 
   // String errorMessage;
   @override
@@ -78,14 +82,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
                     if (user != null) {
+
                       //Navigator.pushNamed(context, AnyScreen.id);
                       print(user.user?.email);
-                      print(password);
+                      print(password);git
+
+                      Navigator.pushNamed(context, MapScreen.id);
+                      //print(user.user?.email);
+
                     }
                   } catch (e) {
                     print(e);
                   }
-                })
+                }),
+
           ],
         ),
       ),
