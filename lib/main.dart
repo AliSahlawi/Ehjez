@@ -7,12 +7,16 @@ import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore_for_file: prefer_const_constructors
 void main() async{
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(Ehjez());
+
+
+
 }
 
 
@@ -37,4 +41,5 @@ class Ehjez extends StatelessWidget {
     );
   }
 }
+
 
