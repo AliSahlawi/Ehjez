@@ -12,7 +12,10 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height,
+      width: size.height,
       child: IntroductionScreen(
         pages: [
           PageViewModel(
