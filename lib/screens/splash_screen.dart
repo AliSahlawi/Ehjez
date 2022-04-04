@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                  Text('Ehjez\nإحجز' , style: TextStyle(fontSize: 45 , fontFamily: "Sukar" , color: kTextColor  ),),
+                  Text('Ehjez\n إحجز' , style: TextStyle(fontSize: 45 , fontFamily: "Sukar" , color: kTextColor  ),),
                   
                   Image.asset("assets/images/splash_screen.png" , height: 450, width: 250,) 
 

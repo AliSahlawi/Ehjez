@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ehjez/services/location.dart';
 
@@ -8,7 +9,7 @@ import 'package:ehjez/services/location.dart';
 
 class MapScreen extends StatefulWidget {
   static String id = 'map_screen';
-
+  
   const MapScreen({Key? key}) : super(key: key);
 
   @override
@@ -44,21 +45,49 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body:GoogleMap(
-            markers: {_kGooglePlexMarker},
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ),
-
-
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToMyPosition,
-        label: Text('To My Position!'),
-        icon: Icon(Icons.directions_boat),
+      body: SingleChildScrollView(
+        child:Column(
+          children: [
+            Container(
+              height: size.height - 90,
+            
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(45),
+              bottomLeft: Radius.circular(45),
+            ),
+              child: GoogleMap(
+                    markers: {_kGooglePlexMarker},
+                    mapType: MapType.normal,
+                    initialCameraPosition: _kGooglePlex,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  ),
+            )
+            ),
+        
+    
+             Padding(
+               padding: const EdgeInsets.only(left: 25 , top: 25),
+               child: Row(
+                 children: [
+                  Icon(Icons.search , color: Colors.grey, size: 35,),
+                  SizedBox(width: 10,),
+                  Text('Search' , style: TextStyle(color: Colors.grey , fontSize: 20),)
+    
+    
+                ]),
+             ),
+    
+            
+          ],
+        ),
+    
+    
+      
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'package:ehjez/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'map_screen.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
 
@@ -119,6 +121,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         'PhoneNum': phoneNUmber,
                         'PlateNum':carNumber,
                       });
+                      Navigator.pushNamed(context, MapScreen.id);
+                    
 
                     }
                   } catch (e) {
