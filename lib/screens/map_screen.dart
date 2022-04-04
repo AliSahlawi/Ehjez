@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ehjez/services/location.dart';
+import 'package:ehjez/services/database.dart';
 
+// ignore_for_file: prefer_const_constructors
 
 
 class MapScreen extends StatefulWidget {
@@ -21,27 +23,28 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
 
+  var parkingLocations =  [];
+  Set<Marker> allMarkers = {} ;
+  late BitmapDescriptor icon ;
+
+  @override
+  void initState() {
+
+    super.initState();
+    // getIcons();
+    createMarkers();
+
+  }
 
 
 
 
-  static final Marker _kGooglePlexMarker = Marker(
-      markerId: MarkerId('_KGooglePlexMarker'),
-      infoWindow: InfoWindow(title: 'Google Plex'),
-      icon: BitmapDescriptor.defaultMarker,
-      position: LatLng(37.42796133580664, -122.085749655962));
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static final CameraPosition _startingPosition = CameraPosition(
 
     target: LatLng(26.1864, 50.5505),
     zoom: 14.4746,
   );
 
-  // static final CameraPosition _kLake = CameraPosition(
-  //     bearing: 192.8334901395799,
-  //     target: LatLng(37.43296265331129, -122.08832357078792),
-  //     tilt: 59.440717697143555,
-  //     zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +62,15 @@ class _MapScreenState extends State<MapScreen> {
               bottomLeft: Radius.circular(45),
             ),
               child: GoogleMap(
-                    markers: {_kGooglePlexMarker},
+                    markers: allMarkers,
                     mapType: MapType.normal,
-                    initialCameraPosition: _kGooglePlex,
+                    initialCameraPosition: _startingPosition,
                     onMapCreated: (GoogleMapController controller) {
+                      // getIcons();
+                      createMarkers();
+
                       _controller.complete(controller);
+
                     },
                   ),
             )
@@ -73,7 +80,7 @@ class _MapScreenState extends State<MapScreen> {
              Padding(
                padding: const EdgeInsets.only(left: 25 , top: 25),
                child: Row(
-                 children: [
+                 children: const [
                   Icon(Icons.search , color: Colors.grey, size: 35,),
                   SizedBox(width: 10,),
                   Text('Search' , style: TextStyle(color: Colors.grey , fontSize: 20),)
@@ -88,6 +95,12 @@ class _MapScreenState extends State<MapScreen> {
     
     
       
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          // createMarkers();
+          print(parkingLocations[0]['Latitude']);
+        },
       ),
     );
   }
@@ -108,6 +121,36 @@ class _MapScreenState extends State<MapScreen> {
 
 
   }
+
+
+
+// gets all Parking locations from database and create a marker for every location
+  void createMarkers() async{
+     parkingLocations = await  DatabaseService().getParkingLocations();
+     BitmapDescriptor icon = await getIcons();
+    for (var location in parkingLocations)
+{
+  Marker newMarker = Marker(
+      markerId: MarkerId(location['Name']),
+      infoWindow: InfoWindow(title: location['Description']),
+      icon: icon,
+      position: LatLng(location['Latitude'], location['Longitude']),
+  );
+
+  setState(() {
+    allMarkers.add(newMarker);
+  });
+
+}
+}
+  getIcons() async {
+     var iconImage = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 0.5),
+        "assets/images/icons8-parking-50.jpg");
+        return iconImage;
+  }
+
+
 
 
 }
