@@ -34,7 +34,7 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           actions: <Widget>[
             IconButton(
-                onPressed: () { DatabaseService().getData();},
+                onPressed: () { DatabaseService().getUsers();},
                 icon: Icon(
                   Icons.favorite_border,
                   color: Colors.grey,
