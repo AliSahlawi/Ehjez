@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ehjez/services/location.dart';
 import 'package:ehjez/services/database.dart';
+import 'package:ehjez/models/parking_location.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -200,6 +201,8 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           _goToMyPosition();
+          print(parkingLocations);
+
         },
       ),
     );
@@ -213,7 +216,7 @@ class _MapScreenState extends State<MapScreen> {
     await location.getCurrentLocation();
     final CameraPosition _myPosition = CameraPosition(
       target: LatLng(location.latitude, location.longitude),
-      zoom: 10.4746
+      zoom: 14.4746
     );
 
     controller.animateCamera(CameraUpdate.newCameraPosition(_myPosition));
@@ -230,11 +233,14 @@ class _MapScreenState extends State<MapScreen> {
      BitmapDescriptor icon = await getIcons();
     for (var location in parkingLocations)
 {
+
   Marker newMarker = Marker(
-      markerId: MarkerId(location['Name']),
-      infoWindow: InfoWindow(title: location['Description']),
+      markerId: MarkerId(location.name),
+      infoWindow: InfoWindow(title: location.description),
       icon: icon,
-      position: LatLng(location['Latitude'], location['Longitude']),
+      position: LatLng(location.latitude, location.longitude),
+
+
   );
 
   setState(() {
