@@ -199,8 +199,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          // createMarkers();
-          print(parkingLocations[0]['Latitude']);
+          _goToMyPosition();
         },
       ),
     );
