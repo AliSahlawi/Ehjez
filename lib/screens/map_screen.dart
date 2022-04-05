@@ -61,18 +61,119 @@ class _MapScreenState extends State<MapScreen> {
               bottomRight: Radius.circular(45),
               bottomLeft: Radius.circular(45),
             ),
-              child: GoogleMap(
-                    markers: allMarkers,
-                    mapType: MapType.normal,
-                    initialCameraPosition: _startingPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      // getIcons();
-                      createMarkers();
+              child: Stack(
+                children: [
+                 GoogleMap(
+                      markers: allMarkers,
+                      mapType: MapType.normal,
+                      initialCameraPosition: _startingPosition,
+                      onMapCreated: (GoogleMapController controller) {
+                        // getIcons();
+                        createMarkers();
+              
+                        _controller.complete(controller);
+              
+                      },
+                    ),
 
-                      _controller.complete(controller);
+                    Positioned(
+                      right: size.width - 372,
+                      bottom: size.height - 800,
+                      child: Container(
+                        height: 150,
+                        width: 350,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                             Padding(
+                               padding: const EdgeInsets.all(15),
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   Text('Bahrain Airport' , style: TextStyle(color: Colors.black , fontSize: 25 , fontWeight: FontWeight.bold , fontFamily: "Sukar"),),
+                                   SizedBox(height: 3,),
+                                   Text('Rd 2404,Muharraq' , style: TextStyle(color: Colors.grey , fontSize: 16),),
+                                   SizedBox(height: 25,),
+                                   Row(
+                                     children: [
+                                       Icon(Icons.attach_money ),
+                                       SizedBox(width: 4,),
+                                       Text('2 BD/h' , style: TextStyle(color: Colors.black , fontSize: 16),)
+                                     ],
+                                   )
+                                 ],
+                               ),
+                             ),
+                    
+                    
+                    
+                              Image(
+                          image: AssetImage("assets/images/locate_park.png"),
+                          height: 150,
+                          width: 150) 
+                          ],
+                        ),
+                      ),
+                    ),
 
-                    },
-                  ),
+
+
+                    Positioned(
+                      right: size.width-372,
+                      top: size.height -780,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          
+                          Container(
+                              height: 52,
+                              width: 50,
+                             decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Colors.white
+                          ),
+
+                          child: Icon(Icons.density_medium_rounded),
+                          ),
+
+                          SizedBox(width: 195,),
+                          
+                          Container(
+                              height: 52,
+                              width: 100,
+                             decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Colors.white
+                          ),
+                    
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.directions_car_rounded),
+                                SizedBox(width: 3,),
+                                Column(children: [
+                                  Text('My Car' , style: TextStyle(color: Colors.black , fontSize: 16 , fontWeight: FontWeight.bold , fontFamily: "Sukar"),),
+                                   Text('105483' , style: TextStyle(color: Colors.grey , fontSize: 13),),
+                                ],)
+                    
+                    
+                            ]),
+                          ),
+                    
+                          ),
+                          
+                        ],
+                      ),
+                    )
+                ]
+              ),
             )
             ),
         
