@@ -146,7 +146,7 @@ class _MapScreenState extends State<MapScreen> {
   getIcons() async {
      var iconImage = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 0.5),
-        "assets/images/icons8-parking-50.jpg");
+        "assets/images/icons8-parking-100-yellow.jpg");
         return iconImage;
   }
 
