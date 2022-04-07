@@ -24,7 +24,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
 
-  var parkingLocations =  [];
+  List<ParkingLocation> parkingLocations =  [];
   Set<Marker> allMarkers = {} ;
   late BitmapDescriptor icon ;
 
@@ -100,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
                                    Text('Rd 2404,Muharraq' , style: TextStyle(color: Colors.grey , fontSize: 16),),
                                    SizedBox(height: 25,),
                                    Row(
-                                     children: [
+                                     children: const [
                                        Icon(Icons.attach_money ),
                                        SizedBox(width: 4,),
                                        Text('2 BD/h' , style: TextStyle(color: Colors.black , fontSize: 16),)
@@ -120,6 +120,7 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ),
                     ),
+                    
 
 
 
@@ -159,7 +160,7 @@ class _MapScreenState extends State<MapScreen> {
                               children: [
                                 Icon(Icons.directions_car_rounded),
                                 SizedBox(width: 3,),
-                                Column(children: [
+                                Column(children: const [
                                   Text('My Car' , style: TextStyle(color: Colors.black , fontSize: 16 , fontWeight: FontWeight.bold , fontFamily: "Sukar"),),
                                    Text('105483' , style: TextStyle(color: Colors.grey , fontSize: 13),),
                                 ],)
