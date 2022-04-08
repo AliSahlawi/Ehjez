@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ehjez/screens/booking_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,11 +24,12 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final auth = FirebaseAuth.instance;
-    // String currentUserId  = auth.currentUser.phoneNumber;
+
+  // String currentUserId  = auth.currentUser.phoneNumber;
 
   Completer<GoogleMapController> _controller = Completer();
 
-
+  late Widget card = Container();
 
   List<ParkingLocation> parkingLocations = [];
   Set<Marker> allMarkers = {};
@@ -38,7 +41,6 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     // getIcons();
     createMarkers();
-
   }
 
   static final CameraPosition _startingPosition = CameraPosition(
@@ -72,67 +74,7 @@ class _MapScreenState extends State<MapScreen> {
                         _controller.complete(controller);
                       },
                     ),
-                    Positioned(
-                      right: size.width - 372,
-                      bottom: size.height - size.height * 98 / 100,
-                      child: Container(
-                        height: 150,
-                        width: 350,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Colors.white),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Bahrain Airport',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Sukar"),
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text(
-                                    'Rd 2404,Muharraq',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 16),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  Row(
-                                    children: const [
-                                      Icon(Icons.attach_money),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        '2 BD/h',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Image(
-                                image:
-                                    AssetImage("assets/images/locate_park.png"),
-                                height: 150,
-                                width: 150)
-                          ],
-                        ),
-                      ),
-                    ),
+                    card,
                     Positioned(
                       right: size.width - 372,
                       top: size.height - size.height * 95 / 100,
@@ -179,22 +121,24 @@ class _MapScreenState extends State<MapScreen> {
                                               fontFamily: "Sukar"),
                                         ),
                                         FutureBuilder<current_user.User>(
-                                            future: DatabaseService().getUser(auth.currentUser!.uid),
+                                            future: DatabaseService()
+                                                .getUser(auth.currentUser!.uid),
                                             builder: (context, snapshot) {
                                               if (snapshot.hasData) {
                                                 return Text(
                                                   snapshot.data!.plateNum,
-                                                   style: TextStyle(
-                                                     color: Colors.grey, fontSize: 13),
-                                                 );
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 13),
+                                                );
                                               }
                                               return Text(
                                                 "8888",
                                                 style: TextStyle(
-                                                    color: Colors.grey, fontSize: 13),
+                                                    color: Colors.grey,
+                                                    fontSize: 13),
                                               );
-                                            }
-                                        ),
+                                            }),
                                       ],
                                     )
                                   ]),
@@ -259,12 +203,85 @@ class _MapScreenState extends State<MapScreen> {
     BitmapDescriptor icon = await getIcons();
     for (var location in parkingLocations) {
       Marker newMarker = Marker(
-        markerId: MarkerId(location.name),
-        infoWindow: InfoWindow(title: location.description),
-        icon: icon,
-        position: LatLng(location.latitude, location.longitude),
-        onTap: (){}
-      );
+          markerId: MarkerId(location.name),
+          infoWindow: InfoWindow(title: location.description),
+          icon: icon,
+          position: LatLng(location.latitude, location.longitude),
+          onTap: () {
+            Size size = MediaQuery.of(context).size;
+            setState(() {
+              card = Positioned(
+                right: size.width - 372,
+                bottom: size.height - size.height * 98 / 100,
+                child: GestureDetector(
+                  onTap: ()  =>  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  BookingScreen(
+                        parkingLocationId: location.id,
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    height: 150,
+                    width: 350,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                location.name,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Sukar"),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                'Rd 2404,Muharraq',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.attach_money),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    '${location.pricePerHour}/h',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Image(
+                            image: AssetImage("assets/images/locate_park.png"),
+                            height: 150,
+                            width: 150)
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+          });
 
       setState(() {
         allMarkers.add(newMarker);
@@ -279,8 +296,8 @@ class _MapScreenState extends State<MapScreen> {
     return iconImage;
   }
 
-  // getCurrentUserPlateNum(String userId) async {
-  //   var currentUser = await DatabaseService().getUser(userId);
-  //   return currentUser.plateNum;
-  // }
+// getCurrentUserPlateNum(String userId) async {
+//   var currentUser = await DatabaseService().getUser(userId);
+//   return currentUser.plateNum;
+// }
 }
