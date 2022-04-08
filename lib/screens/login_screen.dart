@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       print(user.user?.email);
                       print(password);
 
-                      Navigator.pushNamed(context, MapScreen.id);
+                       Navigator.pushNamed(context, MapScreen.id);
                       //print(user.user?.email);
 
                     }

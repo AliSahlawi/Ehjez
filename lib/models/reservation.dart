@@ -8,7 +8,7 @@ class Reservation {
   }
 
   final double amount;
-  final DateTime startDate;
+  final DateTime  startDate;
   final DateTime finishDate;
   final String location;
   final String user;
@@ -23,9 +23,9 @@ class Reservation {
 
   factory Reservation.fromJson(jsonObject) {
     return Reservation(
-      amount: jsonObject['Amount'] ,
-      startDate: jsonObject['StartDate'] ,
-      finishDate: jsonObject['FinishDate'] ,
+      amount: jsonObject['Amount'].toDouble(),
+      startDate: jsonObject['StartDate'].toDate(),
+      finishDate:jsonObject['FinishDate'].toDate()   ,
       location: jsonObject['Location'] ,
       user: jsonObject['User']
     );

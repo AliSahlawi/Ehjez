@@ -2,11 +2,12 @@ import 'package:ehjez/screens/booking_screen.dart';
 import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
+import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'screens/login_screen.dart';
 import 'screens/registration_screen.dart';
-import 'screens/welcome_screen.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 // ignore_for_file: prefer_const_constructors
 void main() async{
@@ -27,7 +28,7 @@ class Ehjez extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MapScreen(),
+      home: WelcomeScreen(),
       routes: {
         SplashScreen.id :(context) => SplashScreen(),
         OnBoardingScreen.id :(context) => OnBoardingScreen(),
