@@ -172,15 +172,7 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _goToMyPosition();
-          // print(parkingLocations);
-          final user =
-              await DatabaseService().getUser('avc99zmGNnNAqg5aDY8fueGH6It1');
-          final reservation =
-              await DatabaseService().getReservation('ZJAZUXrRCjcoMQlaxB52');
 
-          print(user.email);
-          print(reservation.location);
-          print(auth.currentUser!.uid);
         },
       ),
     );
@@ -296,8 +288,4 @@ class _MapScreenState extends State<MapScreen> {
     return iconImage;
   }
 
-// getCurrentUserPlateNum(String userId) async {
-//   var currentUser = await DatabaseService().getUser(userId);
-//   return currentUser.plateNum;
-// }
 }

@@ -1,30 +1,49 @@
 import 'package:badges/badges.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
-import 'package:ehjez/screens/booking_screen.dart';
-import 'package:ehjez/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ehjez/models/user.dart' as current_user;
 import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ehjez/services/database.dart';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
+  static String id = 'booking_screen';
+
   final parkingLocationId;
 
   BookingScreen({required this.parkingLocationId});
-
-  static String id = 'booking_screen';
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  late ParkingLocation parkingLocation;
+  var Reservations = [];
+  var Users = [];
+  String formattedTime = DateFormat('hh:mm').format(DateTime.now());
+  TimeOfDay time0 = TimeOfDay.now();
+  TimeOfDay time1 = TimeOfDay.now();
+  var Arriving;
+  var leaving;
+  final auth = FirebaseAuth.instance;
+  var uid;
+  User? _User;
+  static const rowSpacer = TableRow(children: [
+    SizedBox(
+      height: 15,
+    ),
+    SizedBox(
+      height: 15,
+    )
+  ]);
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  _BookingScreenState() {
+    _User = auth.currentUser;
+    uid = _User?.uid;
+    _getUser();
   }
 
   @override
@@ -39,9 +58,7 @@ class _BookingScreenState extends State<BookingScreen> {
           centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.arrow_back,
               color: kTextColor,
@@ -49,9 +66,7 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           actions: <Widget>[
             IconButton(
-                onPressed: () {
-                  DatabaseService().getUsers();
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.favorite_border,
                   color: Colors.grey,
@@ -62,16 +77,19 @@ class _BookingScreenState extends State<BookingScreen> {
         body: ListView(scrollDirection: Axis.vertical, children: [
           Column(
             children: <Widget>[
-              Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 20, 230, 0),
-                  child: Text("Destination",
-                      style: TextStyle(
-                        color: kTextColor,
-                        fontSize: 26.0,
-                      )),
-                )
-              ]),
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(top: 30, right: 200),
+                      child: Text("Destination",
+                          style: TextStyle(
+                            color: kTextColor,
+                            fontSize: 26.0,
+                          )),
+                    ),
+                  ]),
               Column(
                 children: [
                   Row(
@@ -84,16 +102,14 @@ class _BookingScreenState extends State<BookingScreen> {
                       SizedBox(width: 20),
                       Expanded(
                         child: FutureBuilder<ParkingLocation>(
-                          future: DatabaseService().getParkingLocation(widget.parkingLocationId),
-                          builder: (context,snapshot){
-                            if(snapshot.hasData){
+                          future: DatabaseService()
+                              .getParkingLocation(widget.parkingLocationId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
-
-                                children:  [
-
-
+                                children: [
                                   Container(
                                     // margin: EdgeInsets.fromLTRB(0, 0, 46, 10),
 
@@ -108,7 +124,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   Text(
                                     // "Bulding 2758, Road 4650 Shaikh Khalifa Bin Salman Hwy, Jidhafs",
                                     snapshot.data!.description,
-                                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14),
                                   )
                                 ],
                               );
@@ -128,42 +145,85 @@ class _BookingScreenState extends State<BookingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             "Arriving",
                             style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: const TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () async {
+                            Arriving = await showTimePicker(
+                                context: context, initialTime: time0);
+
+                            if (Arriving != null) {
+                              setState(() {
+                                time0 = Arriving;
+                              });
+                            }
+                          },
                           child: Text(
-                            "Time",
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            time0.format(context).toString(),
+                            style: TextStyle(color: Colors.grey),
                           ),
                         )
                       ],
                     ),
-                    Badge(
-                        badgeContent: Text("2h 5m"),
-                        badgeColor: Colors.amber,
-                        shape: BadgeShape.square,
-                        borderRadius: BorderRadius.circular(20)),
-                    Column(
+                    Stack(
                       children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        SizedBox(
+                          height: 78,
+                          child: VerticalDivider(
+                            width: 60,
+                            thickness: 1.5,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          right: 0,
+                          left: 1,
+                          child: Badge(
+                              badgeContent: Text(Duration()),
+                              badgeColor: Colors.amber,
+                              shape: BadgeShape.square,
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Leaving",
                             style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: const TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () async {
+                            leaving = await showTimePicker(
+                                context: context, initialTime: time1);
+
+                            if (leaving != null) {
+                              setState(() {
+                                time1 = leaving;
+                              });
+                            }
+                          },
                           child: Text(
-                            "Time",
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            time1.format(context).toString(),
+                            style: TextStyle(color: Colors.grey),
                           ),
                         )
                       ],
@@ -171,64 +231,74 @@ class _BookingScreenState extends State<BookingScreen> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 30, 60, 10),
-                        child: Text(
-                          "Vehicle",
-                          style: TextStyle(color: Colors.black, fontSize: 20),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Text(
-                          "vehicle",
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 90, 10),
-                        child: Text(
-                          "Type",
-                          style: TextStyle(color: Colors.black, fontSize: 20),
-                        ),
-                      ),
-                      Text(
-                        "sedan",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Text(
-                          "Plate Number",
-                          style: TextStyle(color: Colors.black, fontSize: 20),
-                        ),
-                      ),
-                      Text(
-                        "00000",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.only(left: 50),
+                child: FutureBuilder<current_user.User>(
+                    future: DatabaseService()
+                        .getUser(auth.currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Table(
+                          columnWidths: const <int, TableColumnWidth>{
+                            0: FlexColumnWidth(0.2),
+                            1: FlexColumnWidth(0.1),
+                          },
+                          children: [
+
+                            rowSpacer,
+                            TableRow(
+                              children: [
+                                Text(
+                                  "Vehicle",
+                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                ),
+                                Text(
+                                  snapshot.data!.name,
+                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            rowSpacer,
+                            TableRow(
+                              children: [
+                                Text(
+                                  "Type",
+                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                ),
+                                Text(
+                                  snapshot.data!.phoneNum,
+                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            rowSpacer,
+                            TableRow(
+                              children: [
+                                Text(
+                                  "Plate Number",
+                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                ),
+                                Text(
+                                  snapshot.data!.plateNum,
+                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            rowSpacer
+                          ],
+                        );
+                      }
+                      return Text(
+                        "8888",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13),
+                      );
+                    }),
+              ),
+              Divider(
+                color: Colors.grey,
+                thickness: 1,
               ),
               Container(
                 height: 240,
@@ -283,10 +353,14 @@ class _BookingScreenState extends State<BookingScreen> {
         ]));
   }
 
-// getChosenParkingLocation() async{
-//   setState(() async{
-//     parkingLocation = await  DatabaseService().getParkingLocation(widget.parkingLocationId);
-//   });
-// }
+  void _getUser() async {
+    Users = (await DatabaseService().getUser(uid)) as List;
+  }
 
+  String Duration() {
+    var HoursDifferenece = (time1.hour - time0.hour).abs();
+    var MinutesDifference = (time1.minute - time0.minute).abs();
+
+    return "$HoursDifferenece : $MinutesDifference h";
+  }
 }
