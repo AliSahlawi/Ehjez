@@ -140,7 +140,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               Container(
                 decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
+                BoxDecoration(border: Border.all(color: Colors.grey)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -189,11 +189,13 @@ class _BookingScreenState extends State<BookingScreen> {
                           top: 20,
                           right: 0,
                           left: 1,
-                          child: Badge(
-                              badgeContent: Text(Duration()),
-                              badgeColor: Colors.amber,
-                              shape: BadgeShape.square,
-                              borderRadius: BorderRadius.circular(20)),
+                          child: FittedBox(
+                            child: Badge(
+                                badgeContent: Text(Duration()),
+                                badgeColor: Colors.amber,
+                                shape: BadgeShape.square,
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
                         ),
                       ],
                     ),
@@ -250,11 +252,13 @@ class _BookingScreenState extends State<BookingScreen> {
                               children: [
                                 Text(
                                   "Vehicle",
-                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
                                 ),
                                 Text(
                                   snapshot.data!.name,
-                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 14),
                                 ),
                               ],
                             ),
@@ -263,11 +267,13 @@ class _BookingScreenState extends State<BookingScreen> {
                               children: [
                                 Text(
                                   "Type",
-                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
                                 ),
                                 Text(
                                   snapshot.data!.phoneNum,
-                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 14),
                                 ),
                               ],
                             ),
@@ -276,11 +282,13 @@ class _BookingScreenState extends State<BookingScreen> {
                               children: [
                                 Text(
                                   "Plate Number",
-                                  style: TextStyle(color: Colors.black, fontSize: 20),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
                                 ),
                                 Text(
                                   snapshot.data!.plateNum,
-                                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 14),
                                 ),
                               ],
                             ),
@@ -358,9 +366,13 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   String Duration() {
-    var HoursDifferenece = (time1.hour - time0.hour).abs();
-    var MinutesDifference = (time1.minute - time0.minute).abs();
+    num HoursDifferenece = (time1.hour - time0.hour).abs();
+    num MinutesDifference = (time1.minute - time0.minute);
+    num totalMin = (HoursDifferenece * 60 + MinutesDifference);
+    num minutes = totalMin % 60;
+    num hours = totalMin - minutes;
 
-    return "$HoursDifferenece : $MinutesDifference h";
+    return (hours~/60 ).toString() + ":" +
+        minutes.toString().padLeft(2, '0') + " h" ;
   }
 }
