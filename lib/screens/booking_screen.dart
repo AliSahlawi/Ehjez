@@ -9,6 +9,8 @@ import 'package:ehjez/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../components/CustomerReview.dart';
+
 class BookingScreen extends StatefulWidget {
   static String id = 'booking_screen';
 
@@ -357,8 +359,115 @@ class _BookingScreenState extends State<BookingScreen> {
                 thickness: 1,
               )
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top:20,bottom: 20, left: 25),
+            child: Text(
+              "Customer Reviews" ,
+              style: TextStyle(
+                color: kTextColor,
+                fontSize: 25
+              ),
+            ),
+          ),
+          Column(
+
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 30,right: 30),
+                child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "4.1",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30
+                          )
+                          ,),
+                        Text(
+                          "3 Reviews",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                    for(int i=1 ;i<=5;i++)
+                      if(i<=4.1.floor()) // we should replace "4.1" by an average variable to calculate the average rate
+                    Icon(
+                      Icons.star,
+                      size: 35,
+                      color: Colors.amber,
+                    )
+                    else
+                        Icon(
+                          Icons.star_border,
+                          size: 35,
+                          color: Colors.amber,
+                        )
+
+                  ],
+                ),
+              ),
+
+              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 1),
+              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 2),
+              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 3),
+            ],
+          ),
+          Divider(
+            thickness: 1 ,
+            color: Colors.grey,
+
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, left: 30,right: 30,bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text("Price",
+                      style: TextStyle(
+                          color: kTextColor,
+                          fontSize: 25
+                      ),
+                    ),
+                    Text(
+                      "2 BD",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20
+                      ),
+                    ),
+
+
+                  ],
+                ),
+                ElevatedButton(onPressed: (){}, style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(10),
+                    minimumSize: Size(150,20),
+                    primary: Colors.amber,
+                    textStyle: TextStyle(fontSize: 26),
+                    onPrimary: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)
+                    )
+                ),
+                  child: Text("Book"), )
+              ],
+            ),
           )
-        ]));
+        ]
+        )
+    );
   }
 
   void _getUser() async {
