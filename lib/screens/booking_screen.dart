@@ -1,3 +1,5 @@
+
+
 import 'package:badges/badges.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
@@ -58,7 +60,9 @@ class _BookingScreenState extends State<BookingScreen> {
           centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(
               Icons.arrow_back,
               color: kTextColor,
@@ -253,7 +257,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   style: TextStyle(color: Colors.black, fontSize: 20),
                                 ),
                                 Text(
-                                  snapshot.data!.name,
+                                  snapshot.data!.plateNum,
                                   style: TextStyle(color: Colors.grey, fontSize: 14),
                                 ),
                               ],
@@ -266,7 +270,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   style: TextStyle(color: Colors.black, fontSize: 20),
                                 ),
                                 Text(
-                                  snapshot.data!.phoneNum,
+                                  snapshot.data!.plateNum,
                                   style: TextStyle(color: Colors.grey, fontSize: 14),
                                 ),
                               ],
