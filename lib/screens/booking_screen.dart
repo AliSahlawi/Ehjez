@@ -24,7 +24,7 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   var Reservations = [];
-  var Users = [];
+  // var Users = [];
   String formattedTime = DateFormat('hh:mm').format(DateTime.now());
   TimeOfDay time0 = TimeOfDay.now();
   TimeOfDay time1 = TimeOfDay.now();
@@ -43,9 +43,9 @@ class _BookingScreenState extends State<BookingScreen> {
   ]);
 
   _BookingScreenState() {
-    _User = auth.currentUser;
-    uid = _User?.uid;
-    _getUser();
+    // _User = auth.currentUser;
+    // uid = _User?.uid;
+    // _getUser();
   }
 
   @override
@@ -60,7 +60,9 @@ class _BookingScreenState extends State<BookingScreen> {
           centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(
               Icons.arrow_back,
               color: kTextColor,
@@ -470,9 +472,9 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  void _getUser() async {
-    Users = (await DatabaseService().getUser(uid)) as List;
-  }
+  // void _getUser() async {
+  //   Users = (await DatabaseService().getUser(uid)) as List;
+  // }
 
   String Duration() {
     num HoursDifferenece = (time1.hour - time0.hour).abs();
