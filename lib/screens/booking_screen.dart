@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 
 
 
+
 class BookingScreen extends StatefulWidget {
   static String id = 'booking_screen';
 
@@ -25,13 +26,12 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  var Reservations = [];
-  // var Users = [];
+
   var amount;
 
   String formattedTime = DateFormat('hh:mm').format(DateTime.now());
-  TimeOfDay time0 = TimeOfDay.now();
-  TimeOfDay time1 = TimeOfDay.now();
+  DateTime time0 = DateTime.now();
+  DateTime time1 = DateTime.now();
   var Arriving;
   var leaving;
   final auth = FirebaseAuth.instance;
@@ -170,8 +170,11 @@ class _BookingScreenState extends State<BookingScreen> {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
-                            Arriving = await showTimePicker(
-                                context: context, initialTime: time0);
+                            Arriving = await showDatePicker(context: context,
+                                initialDate: time0,
+                                firstDate: DateTime(2022,3,1),
+                                lastDate:DateTime(2050)
+                            );
 
                             if (Arriving != null) {
                               setState(() {
@@ -180,7 +183,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             }
                           },
                           child: Text(
-                            time0.format(context).toString(),
+                            DateFormat('h:mm a').format(time0),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )
@@ -225,8 +228,14 @@ class _BookingScreenState extends State<BookingScreen> {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
-                            leaving = await showTimePicker(
-                                context: context, initialTime: time1);
+
+                            leaving = await showDatePicker(context: context,
+                                initialDate: time1,
+                                firstDate: DateTime(2022,3,1),
+                                lastDate:DateTime(2050),
+
+
+                            );
 
                             if (leaving != null) {
                               setState(() {
@@ -235,7 +244,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             }
                           },
                           child: Text(
-                            time1.format(context).toString(),
+                            DateFormat('h:mm a').format(time1),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )
@@ -369,15 +378,32 @@ class _BookingScreenState extends State<BookingScreen> {
               )
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top:20,bottom: 20, left: 25),
-            child: Text(
-              "Customer Reviews" ,
-              style: TextStyle(
-                color: kTextColor,
-                fontSize: 25
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top:20,bottom: 20, left: 0),
+                child: Text(
+                  "Customer Reviews" ,
+                  style: TextStyle(
+                    color: kTextColor,
+                    fontSize: 25
+                  ),
+                ),
               ),
-            ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 14),
+                ),
+                onPressed: ()  {
+
+                },
+                child: Text(
+                 "Write Review",
+                  style: TextStyle(color: Colors.grey,decoration: TextDecoration.underline),
+                ),
+              )
+            ],
           ),
           StreamBuilder<ParkingLocation>(
 
@@ -412,7 +438,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               )
                               ,),
                             Text(
-                              snapshot.data?.feedback.length.toString() ?? "",
+                             "${snapshot.data?.feedback.length} Reviews",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 18,
@@ -421,7 +447,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           ],
                         ),
                         for(int i=1 ;i<=5;i++)
-                          if(i<= snapshot.data!.rate.floor())  // we should replace "4.1" by an average variable to calculate the average rate
+                          if(i<= average.floor())  // we should replace "4.1" by an average variable to calculate the average rate
                         Icon(
                           Icons.star,
                           size: 35,
@@ -481,7 +507,7 @@ class _BookingScreenState extends State<BookingScreen> {
                            amount = snapshot.data!.pricePerHour ;
 
                         return Text(
-                            snapshot.data?.pricePerHour.toString() ?? '0',
+                           "${amount} BD" ?? '0 BD',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20
@@ -519,9 +545,7 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  // void _getUser() async {
-  //   Users = (await DatabaseService().getUser(uid)) as List;
-  // }
+
 
   String Duration() {
     num HoursDifferenece = (time1.hour - time0.hour).abs();
