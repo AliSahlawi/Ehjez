@@ -1,15 +1,17 @@
 import 'package:badges/badges.dart';
+import 'package:ehjez/components/CustomerReview.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
+import 'package:ehjez/models/reservation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ehjez/models/user.dart' as current_user;
 import 'package:flutter/cupertino.dart';
 import 'package:ehjez/services/database.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../components/CustomerReview.dart';
+
 
 class BookingScreen extends StatefulWidget {
   static String id = 'booking_screen';
@@ -25,6 +27,8 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   var Reservations = [];
   // var Users = [];
+  var amount;
+
   String formattedTime = DateFormat('hh:mm').format(DateTime.now());
   TimeOfDay time0 = TimeOfDay.now();
   TimeOfDay time1 = TimeOfDay.now();
@@ -50,6 +54,9 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var users = Provider.of<List<current_user.User>>(context);
+    var locations = Provider.of<List<ParkingLocation>>(context);
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -372,56 +379,75 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
           ),
-          Column(
+          StreamBuilder<ParkingLocation>(
 
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30,right: 30),
-                child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
+            stream: DatabaseService().streamParkingLocation(widget.parkingLocationId),
+            builder: (context, snapshot) {
+              if(!snapshot.hasData)
+                {
+                  return CircularProgressIndicator();
+                }
+                  double total = 0 ;
+                  for(var feedback in snapshot.data!.feedback){
+                    total+= feedback['Rate'];
+                  }
+                  double average = total/snapshot.data!.feedback.length;
+              return Column(
 
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "4.1",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30
-                          )
-                          ,),
-                        Text(
-                          "3 Reviews",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                    for(int i=1 ;i<=5;i++)
-                      if(i<=4.1.floor()) // we should replace "4.1" by an average variable to calculate the average rate
-                    Icon(
-                      Icons.star,
-                      size: 35,
-                      color: Colors.amber,
-                    )
-                    else
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30,right: 30),
+                    child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:  [
+                            Text(
+                              average.toString(),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30
+                              )
+                              ,),
+                            Text(
+                              snapshot.data?.feedback.length.toString() ?? "",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                              ),
+                            )
+                          ],
+                        ),
+                        for(int i=1 ;i<=5;i++)
+                          if(i<= snapshot.data!.rate.floor())  // we should replace "4.1" by an average variable to calculate the average rate
                         Icon(
-                          Icons.star_border,
+                          Icons.star,
                           size: 35,
                           color: Colors.amber,
                         )
+                        else
+                            Icon(
+                              Icons.star_border,
+                              size: 35,
+                              color: Colors.amber,
+                            )
 
-                  ],
-                ),
-              ),
+                      ],
+                    ),
+                  ),
 
-              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 1),
-              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 2),
-              customer_review(customerName: "ABBAS", time: "3 DAYS", feedback: "hello",rate: 3),
-            ],
+                  for(var feedback in snapshot.data!.feedback)
+
+                    customer_review(customerName: feedback['User']['name'], feedback: feedback['String'], rate: feedback['Rate']),
+
+                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 1),
+                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 2),
+                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 3),
+                ],
+              );
+            }
           ),
           Divider(
             thickness: 1 ,
@@ -435,25 +461,46 @@ class _BookingScreenState extends State<BookingScreen> {
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children:  [
                     Text("Price",
                       style: TextStyle(
                           color: kTextColor,
                           fontSize: 25
                       ),
                     ),
-                    Text(
-                      "2 BD",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20
-                      ),
+                    FutureBuilder<ParkingLocation>(
+                      future: DatabaseService()
+                          .getParkingLocation(widget.parkingLocationId),
+                      builder: (context,snapshot){
+
+                        if(!snapshot.hasData)
+                          {
+                            return CircularProgressIndicator();
+                          }
+
+                           amount = snapshot.data!.pricePerHour ;
+
+                        return Text(
+                            snapshot.data?.pricePerHour.toString() ?? '0',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20
+                          ),
+                        );
+                      },
+
                     ),
 
 
                   ],
                 ),
-                ElevatedButton(onPressed: (){}, style: ElevatedButton.styleFrom(
+                ElevatedButton(onPressed: (){
+                  print(Arriving );
+                  print(leaving );
+                  // Reservation reservation = Reservation(amount: amount, startDate: Arriving, finishDate: leaving, location: widget.parkingLocationId, user: auth.currentUser!.uid);
+                  // DatabaseService().addReservation(reservation);
+                  
+                }, style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(10),
                     minimumSize: Size(150,20),
                     primary: Colors.amber,
@@ -486,4 +533,7 @@ class _BookingScreenState extends State<BookingScreen> {
     return (hours~/60 ).toString() + ":" +
         minutes.toString().padLeft(2, '0') + " h" ;
   }
+  
+
+
 }

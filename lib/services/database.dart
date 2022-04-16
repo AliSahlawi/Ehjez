@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/user.dart';
@@ -20,13 +22,11 @@ class DatabaseService {
     final users = querySnapshot.docs.map((e) {
       // Now here is where the magic happens.
       // We transform the data in to Parking Location  object.
-      final model = User.fromJson(e.data());
+      final model = User.fromJson(e.data() as DocumentSnapshot);
       // Setting the id value of the Parking Location object.
-      model.id = e.id;
+
       return model;
     }).toList();
-
-
 
     return users;
   }
@@ -49,9 +49,7 @@ class DatabaseService {
     }).toList();
 
     return parkingLocations;
-    }
-
-
+  }
 
   Future<List<Reservation>> getReservations() async {
     // Get docs from collection reference
@@ -66,30 +64,59 @@ class DatabaseService {
       return model;
     }).toList();
 
-
-
     return reservations;
   }
 
-  Future<ParkingLocation> getParkingLocation(String parkingLocationId)
-  async{
-     DocumentSnapshot documentSnapshot = await parkingLocationCollection.doc(parkingLocationId).get();
-     ParkingLocation parkingLocation = ParkingLocation.fromJson(documentSnapshot.data());
-     return parkingLocation;
+  Future<ParkingLocation> getParkingLocation(String parkingLocationId) async {
+    DocumentSnapshot documentSnapshot =
+        await parkingLocationCollection.doc(parkingLocationId).get();
+    ParkingLocation parkingLocation =
+        ParkingLocation.fromJson(documentSnapshot.data());
+    return parkingLocation;
   }
 
-  Future<User> getUser(String userId)
-  async{
+  Future<User> getUser(String userId) async {
     DocumentSnapshot documentSnapshot = await userCollection.doc(userId).get();
-    User user = User.fromJson(documentSnapshot.data());
+    User user = User.fromJson(documentSnapshot);
     return user;
   }
 
-  Future<Reservation> getReservation(String reservationId)
-  async{
-    DocumentSnapshot documentSnapshot = await reservationCollection.doc(reservationId).get();
+  Future<Reservation> getReservation(String reservationId) async {
+    DocumentSnapshot documentSnapshot =
+        await reservationCollection.doc(reservationId).get();
     Reservation reservation = Reservation.fromJson(documentSnapshot.data());
     return reservation;
   }
+
+  Stream<ParkingLocation> streamParkingLocation(String id) {
+    return parkingLocationCollection
+        .doc(id)
+        .snapshots()
+        .map((snapshot) => ParkingLocation.fromJson(snapshot.data()));
+  }
+
+  Stream<List<ParkingLocation>> streamParkingLocations() {
+    return parkingLocationCollection
+        .snapshots()
+        .map((list) => list.docs.map((doc) => ParkingLocation.fromJson(doc)).toList());
+
+  }
+  Stream<List<User>> streamUsers() {
+    return userCollection
+        .snapshots()
+        .map((list) => list.docs.map((doc) => User.fromJson(doc)).toList());
+
+  }
+
+  addReservation(Reservation reservation){
+    return reservationCollection.add({
+      'Amount': reservation.amount,
+      'Location':reservation.location,
+      'StartDate':reservation.startDate,
+      'FinishDate':reservation.finishDate,
+      'User':reservation.user
+    }).then((value) => print('Reservation added')).catchError((onError)=> print(onError));
+  }
+
 
 }

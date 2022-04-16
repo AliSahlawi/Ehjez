@@ -41,6 +41,7 @@ dependencies:
   introduction_screen: any
   google_maps_flutter: ^2.1.3
   geolocator: ^8.2.0
+  provider: ^6.0.2
 dev_dependencies:
   flutter_test: 
     sdk: flutter

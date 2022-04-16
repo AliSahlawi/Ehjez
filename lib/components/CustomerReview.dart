@@ -5,14 +5,14 @@ class customer_review extends StatelessWidget {
    const customer_review({
 
     Key? key, required this.customerName,
-    required this.time,
+    // required this.time,
     required this.feedback,
     required this.rate
 
   }) : super(key: key);
 
   final String customerName;
-  final String  time ;
+  // final String  time ;
   final String feedback ;
   final int rate;
 
@@ -34,10 +34,10 @@ class customer_review extends StatelessWidget {
                 customerName+": ",
                 style: TextStyle(color: Colors.black, fontSize: 25,fontWeight: FontWeight.bold),
               ),
-              Text(
-                time+"  ",
-                style: TextStyle(color: Colors.black, fontSize: 16),
-              ),
+              // Text(
+              //   time+"  ",
+              //   style: TextStyle(color: Colors.black, fontSize: 16),
+              // ),
 
             Row(
               children: [
