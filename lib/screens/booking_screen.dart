@@ -27,13 +27,16 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
 
-  var amount;
+  double amount=0;
 
-  String formattedTime = DateFormat('hh:mm').format(DateTime.now());
-  DateTime time0 = DateTime.now();
-  DateTime time1 = DateTime.now();
-  var Arriving;
-  var leaving;
+
+  DateTime date0 = DateTime.now();
+  DateTime date1 = DateTime.now();
+  TimeOfDay time0 = TimeOfDay.now();
+  TimeOfDay time1 = TimeOfDay.now();
+
+  DateTime? Arriving;
+  DateTime? leaving;
   final auth = FirebaseAuth.instance;
   var uid;
   User? _User;
@@ -46,11 +49,7 @@ class _BookingScreenState extends State<BookingScreen> {
     )
   ]);
 
-  _BookingScreenState() {
-    // _User = auth.currentUser;
-    // uid = _User?.uid;
-    // _getUser();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -170,20 +169,34 @@ class _BookingScreenState extends State<BookingScreen> {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
-                            Arriving = await showDatePicker(context: context,
-                                initialDate: time0,
+                            date0 = (await showDatePicker(context: context,
+                                initialDate: DateTime.now(),
                                 firstDate: DateTime(2022,3,1),
                                 lastDate:DateTime(2050)
+                            ))!;
+
+                           time0 = (await showTimePicker(context: context,
+                                initialTime: TimeOfDay.now()))!;
+
+
+                            Arriving =   DateTime(
+                                date0.year,
+                                date0.month,
+                                date0.day,
+                                time0.hour,
+                                time0.minute
                             );
 
                             if (Arriving != null) {
                               setState(() {
-                                time0 = Arriving;
+                                time0 = TimeOfDay.fromDateTime(Arriving!);
+
                               });
                             }
                           },
                           child: Text(
-                            DateFormat('h:mm a').format(time0),
+                           // DateFormat('h:mm a').format(Arriving),
+                            time0.format(context),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )
@@ -205,7 +218,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           left: 1,
                           child: FittedBox(
                             child: Badge(
-                                badgeContent: Text(Duration()),
+                                badgeContent: Text(durationToString(duration())),
                                 badgeColor: Colors.amber,
                                 shape: BadgeShape.square,
                                 borderRadius: BorderRadius.circular(20)),
@@ -229,22 +242,34 @@ class _BookingScreenState extends State<BookingScreen> {
                           ),
                           onPressed: () async {
 
-                            leaving = await showDatePicker(context: context,
-                                initialDate: time1,
+
+                            date1 = (await showDatePicker(context: context,
+                                initialDate: DateTime.now(),
                                 firstDate: DateTime(2022,3,1),
-                                lastDate:DateTime(2050),
+                                lastDate:DateTime(2050)
+                            ))!;
+
+                            time1 = (await showTimePicker(context: context,
+                                initialTime: TimeOfDay.now()))!;
 
 
+                            leaving =   DateTime(
+                                date1.year,
+                                date1.month,
+                                date1.day,
+                                time1.hour,
+                                time1.minute
                             );
 
-                            if (leaving != null) {
+                            if (leaving !=null) {
                               setState(() {
-                                time1 = leaving;
+                                time1 = TimeOfDay.fromDateTime(leaving!);
                               });
                             }
                           },
                           child: Text(
-                            DateFormat('h:mm a').format(time1),
+                           // DateFormat('h:mm a').format(leaving),
+                            time1.format(context),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )
@@ -507,7 +532,7 @@ class _BookingScreenState extends State<BookingScreen> {
                            amount = snapshot.data!.pricePerHour ;
 
                         return Text(
-                           "${amount} BD" ?? '0 BD',
+                           "$amount BD" ?? '0 BD',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20
@@ -547,17 +572,26 @@ class _BookingScreenState extends State<BookingScreen> {
 
 
 
-  String Duration() {
-    num HoursDifferenece = (time1.hour - time0.hour).abs();
-    num MinutesDifference = (time1.minute - time0.minute);
-    num totalMin = (HoursDifferenece * 60 + MinutesDifference);
-    num minutes = totalMin % 60;
-    num hours = totalMin - minutes;
+  int   duration() {
+    int daysDifference = date1.difference(date0).inMinutes;
+    int hoursDifference = (time1.hour - time0.hour).abs();
+    int minutesDifference = (time1.minute - time0.minute);
+    int totalMin = (hoursDifference * 60 + minutesDifference);
+    int minutes = totalMin % 60;
+    int hours = totalMin - minutes;
 
-    return (hours~/60 ).toString() + ":" +
-        minutes.toString().padLeft(2, '0') + " h" ;
+    return (hours~/60 + minutes + daysDifference);  // return duration in minutes ;
   }
-  
+
+  String durationToString(int minutes) {
+    var d = Duration(minutes:minutes);
+    List<String> parts = d.toString().split(':');
+    return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')} h';
+  }
+
+
+
+
 
 
 }
