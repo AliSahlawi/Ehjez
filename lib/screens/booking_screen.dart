@@ -577,10 +577,10 @@ class _BookingScreenState extends State<BookingScreen> {
     int hoursDifference = (time1.hour - time0.hour).abs();
     int minutesDifference = (time1.minute - time0.minute);
     int totalMin = (hoursDifference * 60 + minutesDifference);
-    int minutes = totalMin % 60;
-    int hours = totalMin - minutes;
+    //int minutes = totalMin % 60;
+   // int hours = totalMin - minutes;
 
-    return (hours~/60 + minutes + daysDifference);  // return duration in minutes ;
+    return (totalMin + daysDifference);  // return duration in minutes ;
   }
 
   String durationToString(int minutes) {
