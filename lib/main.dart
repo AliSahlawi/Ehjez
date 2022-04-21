@@ -3,11 +3,11 @@ import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/screens/booking_screen.dart';
 import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
-<<<<<<< HEAD
+
 import 'package:ehjez/screens/review_screen.dart';
-=======
+
 import 'package:ehjez/screens/payment_screen.dart';
->>>>>>> 91dd1c4ab997d0b6b5c719276a3fdb1c0bc97df2
+
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
