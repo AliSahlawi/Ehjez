@@ -9,7 +9,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:ehjez/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:ehjez/screens/payment_screen.dart';
 import 'package:intl/intl.dart';
+
+
 
 
 
@@ -532,7 +535,7 @@ class _BookingScreenState extends State<BookingScreen> {
                            amount = snapshot.data!.pricePerHour ;
 
                         return Text(
-                           "$amount BD" ?? '0 BD',
+                           "$amount BD" ,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20
@@ -546,6 +549,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   ],
                 ),
                 ElevatedButton(onPressed: (){
+                  Navigator.pushNamed(context, PaymentScreen.id);
                   print(Arriving );
                   print(leaving );
                   // Reservation reservation = Reservation(amount: amount, startDate: Arriving, finishDate: leaving, location: widget.parkingLocationId, user: auth.currentUser!.uid);
