@@ -3,6 +3,7 @@ import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/screens/booking_screen.dart';
 import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
+import 'package:ehjez/screens/review_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class Ehjez extends StatelessWidget {
           LoginScreen.id :(context) => LoginScreen(),
           RegistrationScreen.id:(context) => RegistrationScreen(),
           MapScreen.id:(context) => MapScreen(),
+          ReviewScreen.id:(context) => ReviewScreen(),
          // BookingScreen.id:(context) => BookingScreen()
 
         },

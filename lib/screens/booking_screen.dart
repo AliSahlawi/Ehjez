@@ -3,6 +3,7 @@ import 'package:ehjez/components/CustomerReview.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/reservation.dart';
+import 'package:ehjez/screens/review_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ehjez/models/user.dart' as current_user;
 import 'package:flutter/cupertino.dart';
@@ -412,20 +413,24 @@ class _BookingScreenState extends State<BookingScreen> {
                   "Customer Reviews" ,
                   style: TextStyle(
                     color: kTextColor,
-                    fontSize: 25
+                    fontSize: 20
                   ),
                 ),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 14),
-                ),
-                onPressed: ()  {
+              Flexible(
+                flex:1,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 14),
+                  ),
+                  onPressed: ()  {
+                    Navigator.pushNamed(context, ReviewScreen.id);
 
-                },
-                child: Text(
-                 "Write Review",
-                  style: TextStyle(color: Colors.grey,decoration: TextDecoration.underline),
+                  },
+                  child: Text(
+                   "Write Review",
+                    style: TextStyle(color: Colors.grey,decoration: TextDecoration.underline),
+                  ),
                 ),
               )
             ],
@@ -532,7 +537,8 @@ class _BookingScreenState extends State<BookingScreen> {
                            amount = snapshot.data!.pricePerHour ;
 
                         return Text(
-                           "$amount BD" ?? '0 BD',
+                           "$amount BD" ?? '0 BD' ,
+
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20
