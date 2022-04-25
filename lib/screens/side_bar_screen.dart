@@ -41,7 +41,7 @@ class NavBar extends StatelessWidget {
             text:'Settings',
             icon:Icons.settings_outlined,
           ),
-          SizedBox(height: size.height - size.height * 80 / 100,),
+          SizedBox(height: size.height * 0.19),
            buildMenuItem(
             text:'Logout',
             icon:Icons.logout,

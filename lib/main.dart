@@ -59,9 +59,7 @@ class Ehjez extends StatelessWidget {
           LoginScreen.id :(context) => LoginScreen(),
           RegistrationScreen.id:(context) => RegistrationScreen(),
           MapScreen.id:(context) => MapScreen(),
-
           ReviewScreen.id:(context) => ReviewScreen(),
-
           PaymentScreen.id:(context) => PaymentScreen()
 
          // BookingScreen.id:(context) => BookingScreen()

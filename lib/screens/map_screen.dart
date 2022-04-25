@@ -59,7 +59,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
         child: Column(
           children: [
             Container(
-                height: size.height * 0.87,
+                height: size.height * 0.93,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(45),
@@ -107,7 +107,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                             width: 195,
                           ),
                           Container(
-                            height: size.height * 0.065,
+                            height: size.height * 0.07,
                             width: size.width * 0.25,
                             decoration: BoxDecoration(
                                 borderRadius:
@@ -169,7 +169,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
 
                   Positioned(
                      right: size.width * 0.07,
-                     top: size.height - size.height * 42 / 100,
+                     top: size.height - size.height * 36 / 100,
                     child: GestureDetector(
                       onTap: () async {
                        _goToMyPosition();
