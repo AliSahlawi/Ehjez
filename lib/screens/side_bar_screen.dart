@@ -1,7 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ehjez/models/user.dart' as current_user;
+import '../services/database.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   const NavBar({ Key? key }) : super(key: key);
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+   final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -9,11 +19,33 @@ class NavBar extends StatelessWidget {
     return Drawer(
       child: Container(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: size.width *0.046),
           children: [
-            UserAccountsDrawerHeader(accountName: Text('Ali Mohd' , style: TextStyle(color: Colors.black, fontFamily: "Sukar" , fontSize: 25),), 
+            UserAccountsDrawerHeader(
+            accountName: 
+            FutureBuilder<current_user.User>(
+                                            future: DatabaseService()
+                                                .getUser(auth.currentUser!.uid),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                return Text(
+                                                  snapshot.data!.name,
+                                                  style: TextStyle(color: Colors.black, fontFamily: "Sukar" , fontSize: 25),
+                                                );
+                                              }
+                                              print(snapshot.data);
+                                              return Text(
+
+                                                "Loading",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 13),
+                                              );
+                                            }),
+            
+            
             accountEmail: null, 
-            currentAccountPicture: CircleAvatar(child: ClipOval(child: Image.asset('assets/images/user.png' , fit: BoxFit.contain, width: 120, height: 120,)),backgroundColor: Colors.white),
+            currentAccountPicture: CircleAvatar(child: ClipOval(child: Image.asset('assets/images/user.png' , fit: BoxFit.contain, width: size.width * 0.2, height: size.height * 0.2,)),backgroundColor: Colors.white),
             decoration:BoxDecoration(color: Colors.transparent)
             ),
                       buildMenuItem(
@@ -25,7 +57,7 @@ class NavBar extends StatelessWidget {
             icon:Icons.favorite_outline,
           ),
 
-          SizedBox(height: 30,),
+          SizedBox(height: size.height *0.04,),
 
            buildMenuItem(
             text:'How it works',
@@ -41,7 +73,7 @@ class NavBar extends StatelessWidget {
             text:'Settings',
             icon:Icons.settings_outlined,
           ),
-          SizedBox(height: size.height * 0.19),
+          SizedBox(height: size.height * 0.2),
            buildMenuItem(
             text:'Logout',
             icon:Icons.logout,

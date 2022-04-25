@@ -107,7 +107,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                             width: 195,
                           ),
                           Container(
-                            height: size.height * 0.07,
+                            height: size.height * 0.08,
                             width: size.width * 0.25,
                             decoration: BoxDecoration(
                                 borderRadius:
@@ -257,8 +257,8 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                     ),
                   ),
                   child: Container(
-                    height: 150,
-                    width: 350,
+                    height: size.height * 0.2,
+                    width: size.width *0.9,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         color: Colors.white),
