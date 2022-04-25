@@ -73,7 +73,7 @@ class _NavBarState extends State<NavBar> {
             text:'Settings',
             icon:Icons.settings_outlined,
           ),
-          SizedBox(height: size.height * 0.2),
+          SizedBox(height: size.height * 0.17),
            buildMenuItem(
             text:'Logout',
             icon:Icons.logout,

@@ -245,7 +245,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
             Size size = MediaQuery.of(context).size;
             setState(() {
               card = Positioned(
-                right: size.width - 372,
+                right: size.width * 0.05,
                 bottom: size.height - size.height * 98 / 100,
                 child: GestureDetector(
                   onTap: ()  =>  Navigator.push(

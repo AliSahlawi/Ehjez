@@ -541,7 +541,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
                         return Text(
 
-                           "$amount BD" ?? '0 BD' ,
+                           "$amount BD" ,
 
 
 
