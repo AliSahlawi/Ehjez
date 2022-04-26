@@ -12,6 +12,8 @@ import 'package:ehjez/services/database.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/user.dart' as current_user;
 
+import '../constants.dart';
+
 // ignore_for_file: prefer_const_constructors
 
 class MapScreen extends StatefulWidget {
@@ -37,6 +39,7 @@ class _MapScreenState extends State<MapScreen> {
 
   late BitmapDescriptor icon;
 
+  String searchtext="";
   @override
   void initState() {
     super.initState();
@@ -193,20 +196,28 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                 )),
             Padding(
               padding:  EdgeInsets.only(left: size.width * 0.07, top: size.height * 0.009),
-              child: Row(children: const [
-                Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                  size: 35,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Search',
-                  style: TextStyle(color: Colors.grey, fontSize: 20),
-                )
-              ]),
+              child: GestureDetector(
+                onTap: () => showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => buildSheet(), 
+                  ),
+                child: Row(children: const [
+                  Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                    size: 35,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Search',
+                    style: TextStyle(color: Colors.grey, fontSize: 20),
+                  )
+                ]),
+              ),
             ),
           ],
         ),
@@ -329,5 +340,64 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
         "assets/images/icons8-parking-100-yellow.jpg");
     return iconImage;
   }
+
+  Widget makeDismissible({required Widget child}) =>GestureDetector(
+    behavior: HitTestBehavior.opaque,
+    onTap: () => Navigator.of(context).pop(),
+    child: GestureDetector(onTap: (){} , child: child,),
+  );
+
+  Widget buildSheet() => 
+  makeDismissible(
+    child: DraggableScrollableSheet(
+      initialChildSize: 0.7,
+      builder:(_ , controller ) => Container(
+        padding: EdgeInsets.symmetric(vertical:MediaQuery.of(context).size.width * 0.02 , horizontal:MediaQuery.of(context).size.height * 0.02 ),
+        
+        decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(25.0),
+                  topRight: const Radius.circular(25.0),
+                )
+              ),
+        child: ListView(
+          controller: controller,
+          children: [    
+                  Padding(
+                    padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: TextField(
+                        cursorColor: kTextColor,
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        onChanged: (value) {
+                          searchtext = value;
+                        },
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, color: Colors.grey,size: 35,),
+                            labelText: "Search",
+                            labelStyle: TextStyle(color: Colors.grey, fontSize: 20),
+                            enabledBorder:OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                             focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                              borderSide: BorderSide(color: Colors.grey),
+                             ),
+                        )
+                            
+                            
+                          
+                      ),
+                    ),
+                  ),
+        ],),
+      ),
+    ),
+  );
 
 }
