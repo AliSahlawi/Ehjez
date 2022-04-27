@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehjez/screens/booking_screen.dart';
+import 'package:ehjez/screens/side_bar_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +11,8 @@ import 'package:ehjez/services/location.dart';
 import 'package:ehjez/services/database.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/user.dart' as current_user;
+
+import '../constants.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -36,6 +39,7 @@ class _MapScreenState extends State<MapScreen> {
 
   late BitmapDescriptor icon;
 
+  String searchtext="";
   @override
   void initState() {
     super.initState();
@@ -47,16 +51,18 @@ class _MapScreenState extends State<MapScreen> {
     target: LatLng(26.1864, 50.5505),
     zoom: 14.4746,
   );
-
+final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+       key: _key,
+     drawer: NavBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-                height: size.height - 90,
+                height: size.height * 0.93,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(45),
@@ -76,26 +82,36 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                     card,
                     Positioned(
-                      right: size.width - 372,
+                      right: size.width * 0.058,
                       top: size.height - size.height * 95 / 100,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            height: 52,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.white),
-                            child: Icon(Icons.density_medium_rounded),
+                          GestureDetector(
+                            onTap: () {
+                                    if(_key.currentState!.isDrawerOpen){
+                                      _key.currentState!.openEndDrawer();
+                                    }else{
+                                      _key.currentState!.openDrawer();
+                                    }
+                            },
+                            child: Container(
+                              height: size.height * 0.063,
+                              width: size.width * 0.13,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Colors.white),
+                              child: Icon(Icons.density_medium_rounded),
+                          
+                            ),
                           ),
                           SizedBox(
                             width: 195,
                           ),
                           Container(
-                            height: 52,
-                            width: 100,
+                            height: size.height * 0.08,
+                            width: size.width * 0.25,
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
@@ -146,37 +162,72 @@ class _MapScreenState extends State<MapScreen> {
                                   ]),
                             ),
                           ),
+
+
+
+
                         ],
                       ),
-                    )
+                    ),
+
+                  Positioned(
+                     right: size.width * 0.07,
+                     top: size.height - size.height * 36 / 100,
+                    child: GestureDetector(
+                      onTap: () async {
+                       _goToMyPosition();
+                      },
+                      child: Container(
+                        height: size.height * 0.063,
+                        width: size.width * 0.13,
+                        decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      color: Colors.white),
+                        child: Icon(Icons.near_me_rounded ),
+                                      
+                                      
+                      ),
+                    ),
+                  )
+
+
                   ]),
                 )),
             Padding(
-              padding: const EdgeInsets.only(left: 25, top: 25),
-              child: Row(children: const [
-                Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                  size: 35,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Search',
-                  style: TextStyle(color: Colors.grey, fontSize: 20),
-                )
-              ]),
+              padding:  EdgeInsets.only(left: size.width * 0.07, top: size.height * 0.009),
+              child: GestureDetector(
+                onTap: () => showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => buildSheet(), 
+                  ),
+                child: Row(children: const [
+                  Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                    size: 35,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Search',
+                    style: TextStyle(color: Colors.grey, fontSize: 20),
+                  )
+                ]),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          _goToMyPosition();
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     _goToMyPosition();
 
-        },
-      ),
+      //   },
+      // ),
     );
   }
 
@@ -205,7 +256,7 @@ class _MapScreenState extends State<MapScreen> {
             Size size = MediaQuery.of(context).size;
             setState(() {
               card = Positioned(
-                right: size.width - 372,
+                right: size.width * 0.05,
                 bottom: size.height - size.height * 98 / 100,
                 child: GestureDetector(
                   onTap: ()  =>  Navigator.push(
@@ -217,8 +268,8 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                   child: Container(
-                    height: 150,
-                    width: 350,
+                    height: size.height * 0.2,
+                    width: size.width *0.9,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         color: Colors.white),
@@ -256,7 +307,7 @@ class _MapScreenState extends State<MapScreen> {
                                     width: 4,
                                   ),
                                   Text(
-                                    '${location.pricePerHour}/h',
+                                    '${location.pricePerHour} BD/h',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 16),
                                   )
@@ -289,5 +340,64 @@ class _MapScreenState extends State<MapScreen> {
         "assets/images/icons8-parking-100-yellow.jpg");
     return iconImage;
   }
+
+  Widget makeDismissible({required Widget child}) =>GestureDetector(
+    behavior: HitTestBehavior.opaque,
+    onTap: () => Navigator.of(context).pop(),
+    child: GestureDetector(onTap: (){} , child: child,),
+  );
+
+  Widget buildSheet() => 
+  makeDismissible(
+    child: DraggableScrollableSheet(
+      initialChildSize: 0.7,
+      builder:(_ , controller ) => Container(
+        padding: EdgeInsets.symmetric(vertical:MediaQuery.of(context).size.width * 0.02 , horizontal:MediaQuery.of(context).size.height * 0.02 ),
+        
+        decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(25.0),
+                  topRight: const Radius.circular(25.0),
+                )
+              ),
+        child: ListView(
+          controller: controller,
+          children: [    
+                  Padding(
+                    padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: TextField(
+                        cursorColor: kTextColor,
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        onChanged: (value) {
+                          searchtext = value;
+                        },
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, color: Colors.grey,size: 35,),
+                            labelText: "Search",
+                            labelStyle: TextStyle(color: Colors.grey, fontSize: 20),
+                            enabledBorder:OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                             focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                              borderSide: BorderSide(color: Colors.grey),
+                             ),
+                        )
+                            
+                            
+                          
+                      ),
+                    ),
+                  ),
+        ],),
+      ),
+    ),
+  );
 
 }
