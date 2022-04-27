@@ -49,6 +49,7 @@ dependencies:
 
   flutter_stripe: ^2.4.0
   http: ^0.13.4
+  smooth_star_rating_null_safety: ^1.0.4+2
 
 dev_dependencies:
   flutter_test: 

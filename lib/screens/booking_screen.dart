@@ -31,6 +31,7 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
 
+
   double amount=0;
 
 
@@ -57,7 +58,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    Size size = MediaQuery.of(context).size;
     var users = Provider.of<List<current_user.User>>(context);
     var locations = Provider.of<List<ParkingLocation>>(context);
     // TODO: implement build
@@ -90,13 +91,14 @@ class _BookingScreenState extends State<BookingScreen> {
         ),
         body: ListView(scrollDirection: Axis.vertical, children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  children:  [
                     Padding(
-                      padding: EdgeInsets.only(top: 30, right: 200),
+                      padding: EdgeInsets.only(top: size.height*0.04, left: size.width*0.05),
                       child: Text("Destination",
                           style: TextStyle(
                             color: kTextColor,
@@ -380,24 +382,26 @@ class _BookingScreenState extends State<BookingScreen> {
                   ],
                 ),
               ),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 210, 0),
-                  child: Text(
-                    "Description",
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: kTextColor,
-                    ),
-                  )),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 210, 0),
-                  child: Text(
-                    "text text text",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                  )),
+              Padding(
+                padding:  EdgeInsets.only(left: size.width*0.05),
+                child: Text(
+                  "Description",
+                  style: TextStyle(
+                    fontSize: 26,
+                    color: kTextColor,
+                  ),
+                ),
+              ),
+              Padding(
+                padding:  EdgeInsets.only(left: size.width*0.08 , top: size.height*0.02),
+                child: Text(
+                  "text text text",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -541,7 +545,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
                         return Text(
 
-                           "$amount BD" ?? '0 BD' ,
+                           "$amount BD"  ,
 
 
 
