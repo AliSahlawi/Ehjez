@@ -29,6 +29,15 @@ class _ReviewScreenState extends State<ReviewScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: kTextColor,
+          ),
+        ),
       ),
 
       body: Column(
@@ -111,7 +120,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       borderRadius: BorderRadius.circular(50)
                   )
               ),
-                child: Text("Book"),),
+                child: Text("Post"),),
             ),
           )
         ],
