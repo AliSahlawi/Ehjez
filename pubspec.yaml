@@ -49,11 +49,11 @@ dependencies:
 
   flutter_stripe: ^2.4.0
   http: ^0.13.4
-<<<<<<< HEAD
+
   smooth_star_rating_null_safety: ^1.0.4+2
-=======
+
   qr_flutter: ^4.0.0
->>>>>>> 4222231f1ab048874c114dbd2223189e6a2244ba
+
 
 dev_dependencies:
   flutter_test: 
