@@ -11,13 +11,14 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
-var rate = 0.0 ;
-
+  var rate = 0.0 ;
+  DateTime postTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           "Review",
@@ -71,16 +72,47 @@ var rate = 0.0 ;
               ),
             ),
           ),
-          TextField(
-            minLines: 1 ,
-            maxLines: 7,
-            keyboardType: TextInputType.multiline,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))
-              )
-            ),
+          Padding(
+            padding:  EdgeInsets.only(top: size.height*0.05),
+            child: Center(
+              child: SizedBox(
+                width: 300 ,
 
+                child: TextField(
+                  minLines: 5 ,
+                  maxLines: 20,
+                  maxLength: 500,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+
+                      border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    hintText: "Describe your experience"
+                  ),
+
+
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding:  EdgeInsets.only(top:size.height*0.08),
+            child: Center(
+              child: ElevatedButton(
+                onPressed: ()  {},
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(10),
+                  minimumSize: Size(300, 20),
+                  primary: Colors.amber,
+                  textStyle: TextStyle(fontSize: 26),
+                  onPrimary: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)
+                  )
+              ),
+                child: Text("Book"),),
+            ),
           )
         ],
       ),

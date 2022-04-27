@@ -568,7 +568,6 @@ class _BookingScreenState extends State<BookingScreen> {
 
                   // Reservation reservation = Reservation(amount: amount, startDate: Arriving, finishDate: leaving, location: widget.parkingLocationId, user: auth.currentUser!.uid);
                   // DatabaseService().addReservation(reservation);
-
                 }, style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(10),
                     minimumSize: Size(150, 20),
