@@ -10,11 +10,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:ehjez/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ehjez/screens/payment_screen.dart';
 import 'package:intl/intl.dart';
-
-
-
+import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+import 'package:ehjez/screens/payment_screen.dart';
 
 
 
@@ -22,6 +23,7 @@ class BookingScreen extends StatefulWidget {
   static String id = 'booking_screen';
 
   final parkingLocationId;
+
 
   BookingScreen({required this.parkingLocationId});
 
@@ -31,8 +33,8 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
 
-  double amount=0;
-
+  double amount = 0;
+  String parkingLocationName = "";
 
   DateTime date0 = DateTime.now();
   DateTime date1 = DateTime.now();
@@ -54,10 +56,8 @@ class _BookingScreenState extends State<BookingScreen> {
   ]);
 
 
-
   @override
   Widget build(BuildContext context) {
-
     var users = Provider.of<List<current_user.User>>(context);
     var locations = Provider.of<List<ParkingLocation>>(context);
     // TODO: implement build
@@ -120,6 +120,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               .getParkingLocation(widget.parkingLocationId),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
+                              parkingLocationName = snapshot.data!.name;
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -175,15 +176,15 @@ class _BookingScreenState extends State<BookingScreen> {
                           onPressed: () async {
                             date0 = (await showDatePicker(context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2022,3,1),
-                                lastDate:DateTime(2050)
+                                firstDate: DateTime(2022, 3, 1),
+                                lastDate: DateTime(2050)
                             ))!;
 
-                           time0 = (await showTimePicker(context: context,
+                            time0 = (await showTimePicker(context: context,
                                 initialTime: TimeOfDay.now()))!;
 
 
-                            Arriving =   DateTime(
+                            Arriving = DateTime(
                                 date0.year,
                                 date0.month,
                                 date0.day,
@@ -194,12 +195,11 @@ class _BookingScreenState extends State<BookingScreen> {
                             if (Arriving != null) {
                               setState(() {
                                 time0 = TimeOfDay.fromDateTime(Arriving!);
-
                               });
                             }
                           },
                           child: Text(
-                           // DateFormat('h:mm a').format(Arriving),
+                            // DateFormat('h:mm a').format(Arriving),
                             time0.format(context),
                             style: TextStyle(color: Colors.grey),
                           ),
@@ -222,7 +222,8 @@ class _BookingScreenState extends State<BookingScreen> {
                           left: 1,
                           child: FittedBox(
                             child: Badge(
-                                badgeContent: Text(durationToString(duration())),
+                                badgeContent: Text(
+                                    durationToString(duration())),
                                 badgeColor: Colors.amber,
                                 shape: BadgeShape.square,
                                 borderRadius: BorderRadius.circular(20)),
@@ -245,19 +246,17 @@ class _BookingScreenState extends State<BookingScreen> {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
-
-
                             date1 = (await showDatePicker(context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2022,3,1),
-                                lastDate:DateTime(2050)
+                                firstDate: DateTime(2022, 3, 1),
+                                lastDate: DateTime(2050)
                             ))!;
 
                             time1 = (await showTimePicker(context: context,
                                 initialTime: TimeOfDay.now()))!;
 
 
-                            leaving =   DateTime(
+                            leaving = DateTime(
                                 date1.year,
                                 date1.month,
                                 date1.day,
@@ -265,14 +264,14 @@ class _BookingScreenState extends State<BookingScreen> {
                                 time1.minute
                             );
 
-                            if (leaving !=null) {
+                            if (leaving != null) {
                               setState(() {
                                 time1 = TimeOfDay.fromDateTime(leaving!);
                               });
                             }
                           },
                           child: Text(
-                           // DateFormat('h:mm a').format(leaving),
+                            // DateFormat('h:mm a').format(leaving),
                             time1.format(context),
                             style: TextStyle(color: Colors.grey),
                           ),
@@ -411,28 +410,28 @@ class _BookingScreenState extends State<BookingScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top:20,bottom: 20, left: 0),
+                padding: const EdgeInsets.only(top: 20, bottom: 20, left: 0),
                 child: Text(
-                  "Customer Reviews" ,
+                  "Customer Reviews",
                   style: TextStyle(
-                    color: kTextColor,
-                    fontSize: 20
+                      color: kTextColor,
+                      fontSize: 20
                   ),
                 ),
               ),
               Flexible(
-                flex:1,
+                flex: 1,
                 child: TextButton(
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 14),
                   ),
-                  onPressed: ()  {
+                  onPressed: () {
                     Navigator.pushNamed(context, ReviewScreen.id);
-
                   },
                   child: Text(
-                   "Write Review",
-                    style: TextStyle(color: Colors.grey,decoration: TextDecoration.underline),
+                    "Write Review",
+                    style: TextStyle(color: Colors.grey,
+                        decoration: TextDecoration.underline),
                   ),
                 ),
               )
@@ -440,87 +439,91 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           StreamBuilder<ParkingLocation>(
 
-            stream: DatabaseService().streamParkingLocation(widget.parkingLocationId),
-            builder: (context, snapshot) {
-              if(!snapshot.hasData)
-                {
+              stream: DatabaseService().streamParkingLocation(
+                  widget.parkingLocationId),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
                   return CircularProgressIndicator();
                 }
-                  double total = 0 ;
-                  for(var feedback in snapshot.data!.feedback){
-                    total+= feedback['Rate'];
-                  }
-                  double average = total/snapshot.data!.feedback.length;
-              return Column(
+                double total = 0;
+                for (var feedback in snapshot.data!.feedback) {
+                  total += feedback['Rate'];
+                }
+                double average = total / snapshot.data!.feedback.length;
+                return Column(
 
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30,right: 30),
-                    child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
 
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
-                            Text(
-                              average.toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 30
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                average.toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 30
+                                )
+                                ,),
+                              Text(
+                                "${snapshot.data?.feedback.length} Reviews",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                ),
                               )
-                              ,),
-                            Text(
-                             "${snapshot.data?.feedback.length} Reviews",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18,
-                              ),
-                            )
-                          ],
-                        ),
-                        for(int i=1 ;i<=5;i++)
-                          if(i<= average.floor())  // we should replace "4.1" by an average variable to calculate the average rate
-                        Icon(
-                          Icons.star,
-                          size: 35,
-                          color: Colors.amber,
-                        )
-                        else
-                            Icon(
-                              Icons.star_border,
-                              size: 35,
-                              color: Colors.amber,
-                            )
+                            ],
+                          ),
+                          for(int i = 1; i <= 5; i++)
+                            if(i <= average
+                                .floor()) // we should replace "4.1" by an average variable to calculate the average rate
+                              Icon(
+                                Icons.star,
+                                size: 35,
+                                color: Colors.amber,
+                              )
+                            else
+                              Icon(
+                                Icons.star_border,
+                                size: 35,
+                                color: Colors.amber,
+                              )
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  for(var feedback in snapshot.data!.feedback)
+                    for(var feedback in snapshot.data!.feedback)
 
-                    customer_review(customerName: feedback['User']['name'], feedback: feedback['String'], rate: feedback['Rate']),
+                      customer_review(customerName: feedback['User']['name'],
+                          feedback: feedback['String'],
+                          rate: feedback['Rate']),
 
-                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 1),
-                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 2),
-                  // customer_review(customerName: "ABBAS", feedback: "hello",rate: 3),
-                ],
-              );
-            }
+                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 1),
+                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 2),
+                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 3),
+                  ],
+                );
+              }
           ),
           Divider(
-            thickness: 1 ,
+            thickness: 1,
             color: Colors.grey,
 
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15, left: 30,right: 30,bottom: 20),
+            padding: const EdgeInsets.only(
+                top: 15, left: 30, right: 30, bottom: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children:  [
+                  children: [
                     Text("Price",
                       style: TextStyle(
                           color: kTextColor,
@@ -530,19 +533,17 @@ class _BookingScreenState extends State<BookingScreen> {
                     FutureBuilder<ParkingLocation>(
                       future: DatabaseService()
                           .getParkingLocation(widget.parkingLocationId),
-                      builder: (context,snapshot){
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return CircularProgressIndicator();
+                        }
 
-                        if(!snapshot.hasData)
-                          {
-                            return CircularProgressIndicator();
-                          }
+                        amount = snapshot.data!.pricePerHour * duration() / 60;
 
-                           amount = snapshot.data!.pricePerHour ;
 
                         return Text(
 
-                           "$amount BD" ,
-
+                          "${amount.toStringAsPrecision(2)} BD",
 
 
                           style: TextStyle(
@@ -557,16 +558,16 @@ class _BookingScreenState extends State<BookingScreen> {
 
                   ],
                 ),
-                ElevatedButton(onPressed: (){
-                  Navigator.pushNamed(context, PaymentScreen.id);
-                  print(Arriving );
-                  print(leaving );
+                ElevatedButton(onPressed: () async {
+
+                  await initPaymentSheet(context, email: auth.currentUser!.email, price: (amount * 2.65) * 100 );
+
                   // Reservation reservation = Reservation(amount: amount, startDate: Arriving, finishDate: leaving, location: widget.parkingLocationId, user: auth.currentUser!.uid);
                   // DatabaseService().addReservation(reservation);
-                  
+
                 }, style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(10),
-                    minimumSize: Size(150,20),
+                    minimumSize: Size(150, 20),
                     primary: Colors.amber,
                     textStyle: TextStyle(fontSize: 26),
                     onPrimary: Colors.black,
@@ -574,7 +575,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         borderRadius: BorderRadius.circular(50)
                     )
                 ),
-                  child: Text("Book"), )
+                  child: Text("Book"),)
               ],
             ),
           )
@@ -584,27 +585,83 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
 
-
-  int   duration() {
-    int daysDifference = date1.difference(date0).inMinutes;
+  int duration() {
+    int daysDifference = date1
+        .difference(date0)
+        .inMinutes;
     int hoursDifference = (time1.hour - time0.hour).abs();
     int minutesDifference = (time1.minute - time0.minute);
     int totalMin = (hoursDifference * 60 + minutesDifference);
     //int minutes = totalMin % 60;
-   // int hours = totalMin - minutes;
+    // int hours = totalMin - minutes;
 
-    return (totalMin + daysDifference);  // return duration in minutes ;
+    return (totalMin + daysDifference); // return duration in minutes ;
   }
 
   String durationToString(int minutes) {
-    var d = Duration(minutes:minutes);
+    var d = Duration(minutes: minutes);
     List<String> parts = d.toString().split(':');
     return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')} h';
   }
 
+  Future<void> initPaymentSheet(context,
+      {required String? email, required double price}) async {
+    try {
+      // 1. create payment intent on the server
+      final response = await http.post(
+          Uri.parse(
+              'https://us-central1-ehjez-76528.cloudfunctions.net/stripePaymentIntentRequest'),
+          body: {
+            'email': email,
+            'amount': price.toString(),
+          });
+
+      final jsonResponse = jsonDecode(response.body);
+      log(jsonResponse.toString());
+
+      //2. initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: jsonResponse['paymentIntent'],
+            merchantDisplayName: 'Ehjez',
+            customerId: jsonResponse['customer'],
+            customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
+            style: ThemeMode.light,
+            testEnv: true,
+            merchantCountryCode: 'US',
+            currencyCode: 'USD'
+        ),
+      );
+
+      await Stripe.instance.presentPaymentSheet();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment completed!')),
+      );
+      Reservation reservation  = Reservation(amount: amount, startDate: Arriving!, finishDate: leaving!, location: parkingLocationName, user: auth.currentUser!.uid);
 
 
+      Navigator.push(context,MaterialPageRoute(
+          builder: (context) =>  PaymentScreen(reservation: reservation)
+      ),);
+    } catch (e) {
+      if (e is StripeException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error from Stripe: ${e.error.localizedMessage}'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
 
+  createReservation(amount,startDate,finishDate,location,user){
+
+  }
 
 
 }
