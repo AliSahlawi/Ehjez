@@ -11,7 +11,7 @@ import 'package:ehjez/services/location.dart';
 import 'package:ehjez/services/database.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/user.dart' as current_user;
-
+import 'package:provider/provider.dart';
 import '../constants.dart';
 
 // ignore_for_file: prefer_const_constructors
@@ -367,7 +367,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                   Padding(
                     padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: TextField(
                         cursorColor: kTextColor,
@@ -375,7 +375,13 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                         textAlign: TextAlign.left,
                         onChanged: (value) {
                           searchtext = value;
-                        },
+                           buildSuggetions(searchtext);
+                          },
+                        onTap:() => showSuggetions(false),
+ 
+                        
+                  
+                        
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey,size: 35,),
                             labelText: "Search",
@@ -395,9 +401,102 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                       ),
                     ),
                   ),
+                  showSuggetions(true),
         ],),
       ),
     ),
   );
 
+  Widget showSuggetions(bool show){
+    if (show == true){
+    var locations = Provider.of<List<ParkingLocation>>(context);
+    
+     return ListView.builder(
+       itemExtent: null,
+       shrinkWrap: true,
+       itemCount: locations.length,
+       itemBuilder: (BuildContext context, int index) {  
+         final suggetion = locations[index].name;
+         return ListTile(
+           title: Text(suggetion),
+           onTap: (){
+             var query = suggetion;
+              
+           },
+           );
+       }
+     );
+    } 
+    else return Container();
+
+  }
+
+  Widget buildSuggetions(String query){
+    var locations = Provider.of<List<ParkingLocation>>(context , listen: false);
+          List<ParkingLocation> suggetions = locations.where((location){
+          final result = location.name.toLowerCase();
+          final input = query.toLowerCase();
+
+          return result.contains(input);
+
+      }).toList();
+
+
+     return ListView.builder(
+       itemExtent: null,
+       shrinkWrap: true,
+       itemCount: suggetions.length,
+       itemBuilder: (BuildContext context, int index) {  
+         final suggetion = suggetions[index].name;
+         return ListTile(
+           title: Text(suggetion),
+           onTap: (){
+             var query = suggetion;
+              
+           },
+           );
+       }
+     );
+       
+
+  }
+
+
+    
+  // Widget buildSuggestions(BuildContext context , String query)  {
+  //    var locations = Provider.of<List<ParkingLocation>>(context , listen:false);
+  //     List<ParkingLocation> suggetions = locations.where((location){
+  //         final result = location.name.toLowerCase();
+  //         final input = query.toLowerCase();
+
+  //         return result.contains(input);
+
+  //     }).toList();
+
+
+  //    return ListView.builder(
+  //      itemCount: suggetions.length,
+  //      itemBuilder: (BuildContext context, int index) {  
+  //        final suggetion = suggetions[index].name;
+  //        return ListTile(
+  //          title: Text(suggetion),
+  //          onTap: (){
+  //            query = suggetion;
+              
+  //          },
+  //        );
+
+  //      },
+
+
+  //    );
+  // }
+
 }
+
+
+
+
+
+
+
