@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ehjez/models/user.dart' as current_user;
 import '../services/database.dart';
+import 'history_screen.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({ Key? key }) : super(key: key);
@@ -51,10 +52,15 @@ class _NavBarState extends State<NavBar> {
                       buildMenuItem(
             text:'Parking History',
             icon:Icons.history_rounded,
+                          onTap: (){
+              Navigator.pushNamed(context, HistoryScreen.id);
+                          }
+
           ),
           buildMenuItem(
             text:'Favourites',
             icon:Icons.favorite_outline,
+              onTap: (){}
           ),
 
           SizedBox(height: size.height *0.04,),
@@ -62,21 +68,25 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'How it works',
             icon:Icons.info_outline,
+               onTap: (){}
           ),
 
            buildMenuItem(
             text:'Support',
             icon:Icons.support_agent,
+               onTap: (){}
           ),
           
            buildMenuItem(
             text:'Settings',
             icon:Icons.settings_outlined,
+               onTap: (){}
           ),
           SizedBox(height: size.height * 0.17),
            buildMenuItem(
             text:'Logout',
             icon:Icons.logout,
+             onTap: (){}
           ),
         ]),
       ),
@@ -88,12 +98,13 @@ class _NavBarState extends State<NavBar> {
 Widget buildMenuItem({
   required String text,
   required IconData icon,
+  required void Function() onTap
   }){
     final color =Colors.black;
 return ListTile(
   leading: Icon(icon , color: color,),
   title: Text(text , style: TextStyle(color: color , fontFamily: "Sukar" , fontSize: 16),),
-  onTap: (){},
+  onTap:  onTap,
 );
 
 }

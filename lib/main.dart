@@ -7,7 +7,7 @@ import 'package:ehjez/screens/onboarding_screen.dart';
 import 'package:ehjez/screens/review_screen.dart';
 
 import 'package:ehjez/screens/payment_screen.dart';
-
+import 'package:ehjez/screens/history_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+
+
 // ignore_for_file: prefer_const_constructors
 void main() async{
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -60,6 +62,7 @@ class Ehjez extends StatelessWidget {
           RegistrationScreen.id:(context) => RegistrationScreen(),
           MapScreen.id:(context) => MapScreen(),
           ReviewScreen.id:(context) => ReviewScreen(),
+          HistoryScreen.id:(context) => HistoryScreen(),
           // PaymentScreen.id:(context) => PaymentScreen(),
 
          // BookingScreen.id:(context) => BookingScreen()
