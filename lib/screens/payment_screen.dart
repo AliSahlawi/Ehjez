@@ -12,7 +12,9 @@ class PaymentScreen extends StatelessWidget {
   static String id = 'payment_screen';
   Reservation reservation;
 
-  PaymentScreen({required this.reservation});
+  PaymentScreen({required this.reservation} );
+
+
 
   final userEmail = FirebaseAuth.instance.currentUser?.email;
 
@@ -21,6 +23,7 @@ class PaymentScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     String arriving = DateFormat.jm().format(reservation.startDate).toString();
     String leaving = DateFormat.jm().format(reservation.finishDate).toString();
+
 
     String data = reservation.toString();
 

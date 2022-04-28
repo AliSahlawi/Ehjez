@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class customer_review extends StatelessWidget {
@@ -5,14 +6,14 @@ class customer_review extends StatelessWidget {
    const customer_review({
 
     Key? key, required this.customerName,
-    // required this.time,
+     required this.time,
     required this.feedback,
     required this.rate
 
   }) : super(key: key);
 
   final String customerName;
-  // final String  time ;
+   final Timestamp  time ;
   final String feedback ;
   final int rate;
 
@@ -32,12 +33,12 @@ class customer_review extends StatelessWidget {
             children:  [
               Text(
                 customerName+": ",
-                style: TextStyle(color: Colors.black, fontSize: 25,fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontSize: 25,fontWeight: FontWeight.bold,fontFamily: "Sukar"),
               ),
-              // Text(
-              //   time+"  ",
-              //   style: TextStyle(color: Colors.black, fontSize: 16),
-              // ),
+              Text(
+              rateDuration(time.seconds)+"  ",
+                style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: "Sukar"),
+              ),
 
             Row(
               children: [
@@ -72,7 +73,7 @@ class customer_review extends StatelessWidget {
               children:  [
                 Text(
                   feedback,
-                  style: TextStyle(color: Colors.black, fontSize: 25),
+                  style: TextStyle(color: Colors.black, fontSize: 25,fontFamily: "Sukar"),
                 )
               ],
             ),
@@ -81,6 +82,63 @@ class customer_review extends StatelessWidget {
       ),
     );
   }
+
+
+ String rateDuration (int dateFromDB){
+    var duration = Timestamp.fromDate(DateTime.now()).seconds - dateFromDB ;
+
+    if(duration<60) { // if the duration in seconds
+      return "$duration Seconds ago ";
+    }
+    else if (duration>=60 && duration<3600){// if the duration in minutes
+
+      if(duration / 60 ==1 )
+        return "${duration ~/60} Minute ago ";
+      else
+        return "${duration ~/60} Minutes ago ";
+
+
+    }
+    else if (duration>=3600 && duration<86400){// if the duration in hours
+
+      if(duration ~/3600 ==1 )
+        return "${duration ~/3600} Hour ago ";
+      else
+      return "${duration ~/3600} Hours ago ";
+
+    }
+
+    else if (duration>=86400 && duration<604800){// if the duration in days
+
+      if(duration ~/86400==1)
+      return "${duration ~/86400} Day ago ";
+      else
+        return "${duration ~/86400} Days ago ";
+    }
+
+    else if(duration>=604800 && duration< 2.628e+6){ //if the duration in weeks
+      if(duration ~/604800 ==1)
+      return "${duration ~/604800} Week ago ";
+      else
+        return "${duration ~/604800} Weeks ago ";
+
+    }
+
+    else if (duration>=2.628e+6 && duration < 3.154e+7 ){//if the duration in months
+      if(duration ~/2.628e+6==1)
+      return "${duration ~/2.628e+6} Month ago ";
+      else
+        return "${duration ~/2.628e+6} Months ago ";
+    }
+
+    else {
+      if(duration ~/3.154e+7==1)
+      return "${duration ~/3.154e+7} Year ago ";
+      else
+        return "${duration ~/3.154e+7} Years ago ";
+    }
+ }
+
 }
 
 

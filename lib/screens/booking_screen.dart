@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehjez/components/CustomerReview.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
@@ -69,7 +70,7 @@ class _BookingScreenState extends State<BookingScreen> {
         appBar: AppBar(
           title: Text(
             'Booking ',
-            style: TextStyle(fontSize: 25.0, color: kTextColor),
+            style: TextStyle(fontSize: 25.0, color: kTextColor,fontFamily: "Sukar"),
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -106,6 +107,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           style: TextStyle(
                             color: kTextColor,
                             fontSize: 26.0,
+                              fontFamily: "Sukar"
                           )),
                     ),
                   ]),
@@ -137,15 +139,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                       snapshot.data!.name,
                                       style: TextStyle(
                                         color: kTextColor,
-                                        fontSize: 25,
+                                        fontSize: 30,
+                                          fontFamily: "Sukar"
                                       ),
                                     ),
                                   ),
                                   Text(
-                                    // "Bulding 2758, Road 4650 Shaikh Khalifa Bin Salman Hwy, Jidhafs",
                                     snapshot.data!.description,
                                     style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
+                                        color: Colors.grey, fontSize: 16,fontFamily: "Sukar"),
                                   )
                                 ],
                               );
@@ -171,12 +173,15 @@ class _BookingScreenState extends State<BookingScreen> {
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             "Arriving",
-                            style: TextStyle(color: Colors.black, fontSize: 20),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: "Sukar"),
                           ),
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                            textStyle: const TextStyle(fontSize: 20),
+                            textStyle: const TextStyle(fontSize: 20,fontFamily: "Sukar"),
                           ),
                           onPressed: () async {
                             date0 = (await showDatePicker(context: context,
@@ -228,10 +233,13 @@ class _BookingScreenState extends State<BookingScreen> {
                           child: FittedBox(
                             child: Badge(
                                 badgeContent: Text(
-                                    durationToString(duration())),
+                                    durationToString(duration())
+                                        ,style: TextStyle(fontFamily: "Sukar"),
+                                ),
                                 badgeColor: Colors.amber,
                                 shape: BadgeShape.square,
-                                borderRadius: BorderRadius.circular(20)),
+                                borderRadius: BorderRadius.circular(20)
+                            ),
                           ),
                         ),
                       ],
@@ -243,12 +251,12 @@ class _BookingScreenState extends State<BookingScreen> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Leaving",
-                            style: TextStyle(color: Colors.black, fontSize: 20),
+                            style: TextStyle(color: Colors.black, fontSize: 20,fontFamily: "Sukar"),
                           ),
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
-                            textStyle: const TextStyle(fontSize: 20),
+                            textStyle: const TextStyle(fontSize: 20,fontFamily: "Sukar"),
                           ),
                           onPressed: () async {
                             date1 = (await showDatePicker(context: context,
@@ -306,12 +314,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                 Text(
                                   "Vehicle",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: 20,fontFamily: "Sukar"),
                                 ),
                                 Text(
                                   snapshot.data!.name,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
+                                      color: Colors.grey, fontSize: 14,fontFamily: "Sukar"),
                                 ),
                               ],
                             ),
@@ -321,12 +329,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                 Text(
                                   "Type",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: 20,fontFamily: "Sukar"),
                                 ),
                                 Text(
                                   snapshot.data!.phoneNum,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
+                                      color: Colors.grey, fontSize: 14,fontFamily: "Sukar"),
                                 ),
                               ],
                             ),
@@ -336,12 +344,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                 Text(
                                   "Plate Number",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: 20,fontFamily: "Sukar"),
                                 ),
                                 Text(
                                   snapshot.data!.plateNum,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
+                                      color: Colors.grey, fontSize: 14,fontFamily: "Sukar"),
                                 ),
                               ],
                             ),
@@ -353,7 +361,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         "8888",
                         style: TextStyle(
                             color: Colors.grey,
-                            fontSize: 13),
+                            fontSize: 13,fontFamily: "Sukar"),
                       );
                     }),
               ),
@@ -391,6 +399,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   style: TextStyle(
                     fontSize: 26,
                     color: kTextColor,
+                      fontFamily: "Sukar"
                   ),
                 ),
               ),
@@ -401,6 +410,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.black,
+                      fontFamily: "Sukar"
                   ),
                 ),
               ),
@@ -422,7 +432,8 @@ class _BookingScreenState extends State<BookingScreen> {
                   "Customer Reviews",
                   style: TextStyle(
                       color: kTextColor,
-                      fontSize: 20
+                      fontSize: 20,
+                      fontFamily: "Sukar"
                   ),
                 ),
               ),
@@ -438,7 +449,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   child: Text(
                     "Write Review",
                     style: TextStyle(color: Colors.grey,
-                        decoration: TextDecoration.underline),
+                        decoration: TextDecoration.underline,fontFamily: "Sukar"),
                   ),
                 ),
               )
@@ -473,7 +484,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 average.toString(),
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 30
+                                    fontSize: 30,fontFamily: "Sukar"
                                 )
                                 ,),
                               Text(
@@ -481,6 +492,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 18,
+                                    fontFamily: "Sukar"
                                 ),
                               )
                             ],
@@ -508,11 +520,11 @@ class _BookingScreenState extends State<BookingScreen> {
 
                       customer_review(customerName: feedback['User']['name'],
                           feedback: feedback['String'],
-                          rate: feedback['Rate']),
+                          rate: feedback['Rate'],
+                        time: feedback['Time'],
+                      ),
 
-                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 1),
-                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 2),
-                    // customer_review(customerName: "ABBAS", feedback: "hello",rate: 3),
+
                   ],
                 );
               }
@@ -534,7 +546,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     Text("Price",
                       style: TextStyle(
                           color: kTextColor,
-                          fontSize: 25
+                          fontSize: 25,fontFamily: "Sukar"
                       ),
                     ),
                     FutureBuilder<ParkingLocation>(
@@ -552,7 +564,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           "${amount.toStringAsPrecision(2)} BD",
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20
+                              fontSize: 20,fontFamily: "Sukar"
                           ),
                         );
                       },
@@ -572,7 +584,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     padding: EdgeInsets.all(10),
                     minimumSize: Size(150, 20),
                     primary: Colors.amber,
-                    textStyle: TextStyle(fontSize: 26),
+                    textStyle: TextStyle(fontSize: 26,fontFamily: "Sukar"),
                     onPrimary: Colors.black,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)
@@ -589,9 +601,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
 
   int duration() {
-    int daysDifference = date1
-        .difference(date0)
-        .inMinutes;
+    int daysDifference = date1.difference(date0).inMinutes;
     int hoursDifference = (time1.hour - time0.hour).abs();
     int minutesDifference = (time1.minute - time0.minute);
     int totalMin = (hoursDifference * 60 + minutesDifference);
@@ -634,6 +644,7 @@ class _BookingScreenState extends State<BookingScreen> {
             merchantCountryCode: 'US',
             currencyCode: 'USD'
         ),
+
       );
 
       await Stripe.instance.presentPaymentSheet();
@@ -665,6 +676,8 @@ class _BookingScreenState extends State<BookingScreen> {
   createReservation(amount,startDate,finishDate,location,user){
 
   }
+
+
 
 
 }
