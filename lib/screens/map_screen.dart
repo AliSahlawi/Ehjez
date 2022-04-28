@@ -197,12 +197,14 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
             Padding(
               padding:  EdgeInsets.only(left: size.width * 0.07, top: size.height * 0.009),
               child: GestureDetector(
-                onTap: () => showModalBottomSheet(
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (context) => buildSheet(), 
-                  ),
+                behavior: HitTestBehavior.translucent,
+                 onTap:(){showSearch(context: context, delegate: MySearchDelegate());},
+                // showModalBottomSheet(
+                //   isScrollControlled: true,
+                //   backgroundColor: Colors.transparent,
+                //   context: context,
+                //   builder: (context) => buildSheet(), 
+                //   ),
                 child: Row(children: const [
                   Icon(
                     Icons.search,
@@ -341,125 +343,125 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
     return iconImage;
   }
 
-  Widget makeDismissible({required Widget child}) =>GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: () => Navigator.of(context).pop(),
-    child: GestureDetector(onTap: (){} , child: child,),
-  );
+  // Widget makeDismissible({required Widget child}) =>GestureDetector(
+  //   behavior: HitTestBehavior.opaque,
+  //   onTap: () => Navigator.of(context).pop(),
+  //   child: GestureDetector(onTap: (){} , child: child,),
+  // );
 
-  Widget buildSheet() => 
-  makeDismissible(
-    child: DraggableScrollableSheet(
-      initialChildSize: 0.7,
-      builder:(_ , controller ) => Container(
-        padding: EdgeInsets.symmetric(vertical:MediaQuery.of(context).size.width * 0.02 , horizontal:MediaQuery.of(context).size.height * 0.02 ),
+  // Widget buildSheet() => 
+  // makeDismissible(
+  //   child: DraggableScrollableSheet(
+  //     initialChildSize: 0.7,
+  //     builder:(_ , controller ) => Container(
+  //       padding: EdgeInsets.symmetric(vertical:MediaQuery.of(context).size.width * 0.02 , horizontal:MediaQuery.of(context).size.height * 0.02 ),
         
-        decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(25.0),
-                  topRight: const Radius.circular(25.0),
-                )
-              ),
-        child: ListView(
-          controller: controller,
-          children: [    
-                  Padding(
-                    padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: TextField(
-                        cursorColor: kTextColor,
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.left,
-                        onChanged: (value) {
-                          searchtext = value;
-                           buildSuggetions(searchtext);
-                          },
-                        onTap:() => showSuggetions(false),
+  //       decoration: new BoxDecoration(
+  //               color: Colors.white,
+  //               borderRadius: new BorderRadius.only(
+  //                 topLeft: const Radius.circular(25.0),
+  //                 topRight: const Radius.circular(25.0),
+  //               )
+  //             ),
+  //       child: ListView(
+  //         controller: controller,
+  //         children: [    
+  //                 Padding(
+  //                   padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
+  //                   child: Container(
+  //                     height: MediaQuery.of(context).size.height * 0.1,
+  //                     width: MediaQuery.of(context).size.width * 0.9,
+  //                     child: TextField(
+  //                       cursorColor: kTextColor,
+  //                       keyboardType: TextInputType.text,
+  //                       textAlign: TextAlign.left,
+  //                       onChanged: (value) {
+  //                         searchtext = value;
+  //                          buildSuggetions(searchtext);
+  //                         },
+  //                       onTap:() => showSuggetions(false),
  
                         
                   
                         
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey,size: 35,),
-                            labelText: "Search",
-                            labelStyle: TextStyle(color: Colors.grey, fontSize: 20),
-                            enabledBorder:OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                              borderSide: BorderSide(color: Colors.grey),
-                             ),
-                        )
+  //                       decoration: InputDecoration(
+  //                           prefixIcon: Icon(Icons.search, color: Colors.grey,size: 35,),
+  //                           labelText: "Search",
+  //                           labelStyle: TextStyle(color: Colors.grey, fontSize: 20),
+  //                           enabledBorder:OutlineInputBorder(
+  //                           borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+  //                           borderRadius: BorderRadius.circular(25.0),
+  //                         ),
+  //                            focusedBorder: OutlineInputBorder(
+  //                             borderRadius: BorderRadius.all(Radius.circular(25.0)),
+  //                             borderSide: BorderSide(color: Colors.grey),
+  //                            ),
+  //                       )
                             
                             
                           
-                      ),
-                    ),
-                  ),
-                  showSuggetions(true),
-        ],),
-      ),
-    ),
-  );
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 showSuggetions(true),
+  //       ],),
+  //     ),
+  //   ),
+  // );
 
-  Widget showSuggetions(bool show){
-    if (show == true){
-    var locations = Provider.of<List<ParkingLocation>>(context);
+  // Widget showSuggetions(bool show){
+  //   if (show == true){
+  //   var locations = Provider.of<List<ParkingLocation>>(context);
     
-     return ListView.builder(
-       itemExtent: null,
-       shrinkWrap: true,
-       itemCount: locations.length,
-       itemBuilder: (BuildContext context, int index) {  
-         final suggetion = locations[index].name;
-         return ListTile(
-           title: Text(suggetion),
-           onTap: (){
-             var query = suggetion;
+  //    return ListView.builder(
+  //      itemExtent: null,
+  //      shrinkWrap: true,
+  //      itemCount: locations.length,
+  //      itemBuilder: (BuildContext context, int index) {  
+  //        final suggetion = locations[index].name;
+  //        return ListTile(
+  //          title: Text(suggetion),
+  //          onTap: (){
+  //            var query = suggetion;
               
-           },
-           );
-       }
-     );
-    } 
-    else return Container();
+  //          },
+  //          );
+  //      }
+  //    );
+  //   } 
+  //   else return Container();
 
-  }
+  // }
 
-  Widget buildSuggetions(String query){
-    var locations = Provider.of<List<ParkingLocation>>(context , listen: false);
-          List<ParkingLocation> suggetions = locations.where((location){
-          final result = location.name.toLowerCase();
-          final input = query.toLowerCase();
+  // Widget buildSuggetions(String query){
+  //   var locations = Provider.of<List<ParkingLocation>>(context , listen: false);
+  //         List<ParkingLocation> suggetions = locations.where((location){
+  //         final result = location.name.toLowerCase();
+  //         final input = query.toLowerCase();
 
-          return result.contains(input);
+  //         return result.contains(input);
 
-      }).toList();
+  //     }).toList();
 
 
-     return ListView.builder(
-       itemExtent: null,
-       shrinkWrap: true,
-       itemCount: suggetions.length,
-       itemBuilder: (BuildContext context, int index) {  
-         final suggetion = suggetions[index].name;
-         return ListTile(
-           title: Text(suggetion),
-           onTap: (){
-             var query = suggetion;
+  //    return ListView.builder(
+  //      itemExtent: null,
+  //      shrinkWrap: true,
+  //      itemCount: suggetions.length,
+  //      itemBuilder: (BuildContext context, int index) {  
+  //        final suggetion = suggetions[index].name;
+  //        return ListTile(
+  //          title: Text(suggetion),
+  //          onTap: (){
+  //            var query = suggetion;
               
-           },
-           );
-       }
-     );
+  //          },
+  //          );
+  //      }
+  //    );
        
 
-  }
+  // }
 
 
     
@@ -495,7 +497,79 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
 }
 
 
+class MySearchDelegate extends SearchDelegate{
 
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return[IconButton(
+          onPressed: () {
+            if(query.isEmpty){
+              close(context, null);
+            }else{
+            query='';
+            }
+          },
+          icon: Icon(
+            Icons.clear,
+            color: kTextColor,
+          ),
+        )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+          onPressed: () {
+            //Navigator.pop(context);
+            close(context, null);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: kTextColor,
+          ),
+        ); 
+     }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var locations = Provider.of<List<ParkingLocation>>(context , listen:false);
+      List<ParkingLocation> suggetions = locations.where((location){
+          final result = location.name.toLowerCase();
+          final input = query.toLowerCase();
+
+          return result.contains(input);
+
+      }).toList();
+
+
+     return ListView.builder(
+       itemCount: suggetions.length,
+       itemBuilder: (BuildContext context, int index) {  
+         final suggetion = suggetions[index].name;
+         return ListTile(
+           title: Text(suggetion),
+           onTap: (){
+             query = suggetion;
+              
+           },
+         );
+
+       },
+
+
+     );
+ 
+  }
+
+}
 
 
 
