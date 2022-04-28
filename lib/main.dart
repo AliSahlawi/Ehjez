@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/screens/booking_screen.dart';
+import 'package:ehjez/screens/favorite_screen.dart';
 import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
 
@@ -21,6 +22,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+
+
 
 
 // ignore_for_file: prefer_const_constructors
@@ -63,6 +66,7 @@ class Ehjez extends StatelessWidget {
           MapScreen.id:(context) => MapScreen(),
           ReviewScreen.id:(context) => ReviewScreen(),
           HistoryScreen.id:(context) => HistoryScreen(),
+          FavoriteScreen.id:(context) => FavoriteScreen()
           // PaymentScreen.id:(context) => PaymentScreen(),
 
          // BookingScreen.id:(context) => BookingScreen()

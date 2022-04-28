@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ehjez/models/user.dart' as current_user;
 import '../services/database.dart';
+import 'favorite_screen.dart';
 import 'history_screen.dart';
 
 class NavBar extends StatefulWidget {
@@ -60,7 +61,9 @@ class _NavBarState extends State<NavBar> {
           buildMenuItem(
             text:'Favourites',
             icon:Icons.favorite_outline,
-              onTap: (){}
+              onTap: (){
+                Navigator.pushNamed(context, FavoriteScreen.id);
+              }
           ),
 
           SizedBox(height: size.height *0.04,),

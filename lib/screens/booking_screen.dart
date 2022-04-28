@@ -57,14 +57,31 @@ class _BookingScreenState extends State<BookingScreen> {
     )
   ]);
 
+  bool isFav = false;
+
+
+
+   @override
+  void initState() {
+
+    super.initState();
+
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
 
-    var users = Provider.of<List<current_user.User>>(context);
+     // var users = Provider.of<List<current_user.User>>(context);
     var locations = Provider.of<List<ParkingLocation>>(context);
+
+
+
+
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -81,16 +98,53 @@ class _BookingScreenState extends State<BookingScreen> {
             icon: Icon(
               Icons.arrow_back,
               color: kTextColor,
+
             ),
           ),
           actions: <Widget>[
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.favorite_border,
-                  color: Colors.grey,
-                  size: 30.0,
-                ))
+            FutureBuilder<current_user.User>(
+        future: DatabaseService()
+            .getUser(auth.currentUser!.uid),
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            isFav = snapshot.data!.favorites.contains(widget.parkingLocationId);
+              return IconButton(
+                  onPressed: () {
+
+                    if(!isFav) {
+                      DatabaseService().addToFavorite(
+                          auth.currentUser!.uid, widget.parkingLocationId);
+                      setState(() {
+                        isFav = !isFav;
+                      });
+                    }
+                    else {
+                      DatabaseService().removeFromFavorite(
+                          auth.currentUser!.uid, widget.parkingLocationId);
+                      setState(() {
+                        isFav = !isFav;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color:isFav? kTextColor : Colors.grey,
+                    size: 30.0,
+                  ),);
+          }
+          return IconButton(
+            onPressed: () {
+              // if(!isFavorite)
+
+              DatabaseService().addToFavorite(auth.currentUser!.uid, widget.parkingLocationId);
+            },
+            icon: Icon(
+              Icons.favorite_border,
+              color: Colors.grey,
+              size: 30.0,
+            ),);
+        }
+            )
           ],
         ),
         body: ListView(scrollDirection: Axis.vertical, children: [

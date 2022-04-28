@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/models/user.dart';
@@ -88,6 +86,13 @@ class DatabaseService {
     return reservation;
   }
 
+  Stream<User> streamUser(String id) {
+    return userCollection
+        .doc(id)
+        .snapshots()
+        .map((snapshot) => User.fromJson(snapshot.data() as DocumentSnapshot));
+  }
+
   Stream<ParkingLocation> streamParkingLocation(String id) {
     return parkingLocationCollection
         .doc(id)
@@ -133,6 +138,23 @@ class DatabaseService {
       'User':reservation.user
     }).then((value) => print('Reservation added')).catchError((onError)=> print(onError));
   }
+
+  addToFavorite(String userId,String parkingLocationId){
+      final list = [parkingLocationId];
+    return userCollection.doc(userId).update(({'Favorites':FieldValue.arrayUnion(list)})).catchError((onError)=> print(onError));
+
+  }
+  removeFromFavorite(String userId,String parkingLocationId){
+    final list = [parkingLocationId];
+    return userCollection.doc(userId).update(({'Favorites':FieldValue.arrayRemove(list)})).catchError((onError)=> print(onError));
+
+  }
+
+  isFavorite(String userId,String parkingLocationId) async{
+    final user = await getUser(userId);
+    return user.favorites.contains(parkingLocationId)? true : false ;
+  }
+
 
 
 }
