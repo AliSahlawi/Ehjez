@@ -673,9 +673,6 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 
-  createReservation(amount,startDate,finishDate,location,user){
-
-  }
 
 
 

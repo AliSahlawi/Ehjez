@@ -98,13 +98,29 @@ class DatabaseService {
   Stream<List<ParkingLocation>> streamParkingLocations() {
     return parkingLocationCollection
         .snapshots()
-        .map((list) => list.docs.map((doc) => ParkingLocation.fromJson(doc)).toList());
+        .map((list) => list.docs.map((doc) {
+      final model = ParkingLocation.fromJson(doc.data());
+      // Setting the id value of the Parking Location object.
+      model.id = doc.id;
+      return model;
+    }).toList());
 
   }
   Stream<List<User>> streamUsers() {
     return userCollection
         .snapshots()
         .map((list) => list.docs.map((doc) => User.fromJson(doc)).toList());
+
+  }
+  Stream<List<Reservation>> streamReservation(String userId) {
+    return reservationCollection.where('User',isEqualTo: userId)
+        .snapshots()
+        .map((list) => list.docs.map((doc) {
+      final model = Reservation.fromJson(doc.data());
+      // Setting the id value of the Parking Location object.
+      model.id = doc.id;
+      return model;
+    }).toList());
 
   }
 
