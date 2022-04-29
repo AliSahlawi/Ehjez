@@ -1,3 +1,4 @@
+import 'package:ehjez/screens/settings_screen.dart';
 import 'package:ehjez/screens/support_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,7 +88,9 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'Settings',
             icon:Icons.settings_outlined,
-               onTap: (){}
+               onTap: (){
+                 Navigator.pushNamed(context, SettingsScreen.id);
+               }
           ),
           SizedBox(height: size.height * 0.17),
            buildMenuItem(

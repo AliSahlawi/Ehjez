@@ -9,6 +9,7 @@ import 'package:ehjez/screens/review_screen.dart';
 
 import 'package:ehjez/screens/payment_screen.dart';
 import 'package:ehjez/screens/history_screen.dart';
+import 'package:ehjez/screens/settings_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:ehjez/screens/support_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
@@ -69,6 +70,8 @@ class Ehjez extends StatelessWidget {
           HistoryScreen.id:(context) => HistoryScreen(),
           FavoriteScreen.id:(context) => FavoriteScreen(),
           SupportScreen.id:(context) => SupportScreen(),
+          SettingsScreen.id:(context)=> SettingsScreen(),
+
           // PaymentScreen.id:(context) => PaymentScreen(),
 
          // BookingScreen.id:(context) => BookingScreen()
