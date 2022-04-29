@@ -534,8 +534,7 @@ class MySearchDelegate extends SearchDelegate{
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    return Container();
+    return Container();         
   }
 
   @override
@@ -556,9 +555,17 @@ class MySearchDelegate extends SearchDelegate{
          final suggetion = suggetions[index].name;
          return ListTile(
            title: Text(suggetion),
-           onTap: (){
+           onTap: ()async{
              query = suggetion;
-              
+             Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  BookingScreen(
+                        parkingLocationId: suggetions[index].id,
+                      ),
+                    ),
+                  );
+             
            },
          );
 
@@ -568,6 +575,9 @@ class MySearchDelegate extends SearchDelegate{
      );
  
   }
+
+
+  
 
 }
 
