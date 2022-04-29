@@ -57,7 +57,7 @@ class Ehjez extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: WelcomeScreen(),
         routes: {
           SplashScreen.id :(context) => SplashScreen(),
           OnBoardingScreen.id :(context) => OnBoardingScreen(),

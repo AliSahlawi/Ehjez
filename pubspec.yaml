@@ -54,6 +54,7 @@ dependencies:
   smooth_star_rating_null_safety: ^1.0.4+2
 
   qr_flutter: ^4.0.0
+  select_form_field: ^2.2.0
 
 
 dev_dependencies:

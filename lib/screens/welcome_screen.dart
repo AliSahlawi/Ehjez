@@ -48,6 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               mainAxisAlignment:MainAxisAlignment.center,
               children: <Widget>[
                 TypewriterAnimatedTextKit(
+                  isRepeatingAnimation: false,
                   speed: Duration(milliseconds: 100),
                   text: ['Ehjez\n إحجز'],
                   textStyle: TextStyle(

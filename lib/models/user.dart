@@ -16,6 +16,7 @@ class User {
   final String phoneNum;
   final String plateNum;
   final List favorites;
+  final String type;
 
   User({
     required this.id,
@@ -23,7 +24,8 @@ class User {
     required this.email,
     required this.phoneNum,
     required this.plateNum,
-    required this.favorites
+    required this.favorites,
+    required this.type,
   });
 
   factory User.fromJson(DocumentSnapshot documentSnapshot) {
@@ -35,6 +37,7 @@ class User {
       phoneNum: jsonObject['PhoneNum'],
       plateNum: jsonObject['PlateNum'],
       favorites: jsonObject['Favorites'],
+      type: jsonObject['Type'],
     );
   }
 }

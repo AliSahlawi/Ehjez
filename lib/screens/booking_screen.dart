@@ -386,7 +386,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       color: Colors.black, fontSize: 20,fontFamily: "Sukar"),
                                 ),
                                 Text(
-                                  snapshot.data!.phoneNum,
+                                  snapshot.data!.type,
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 14,fontFamily: "Sukar"),
                                 ),

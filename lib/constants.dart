@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 const kTextColor = Color(0xFF190060);
 
 const kTextFieldDecoration = InputDecoration(
-  hintStyle: TextStyle(
-    color: kTextColor
-  ),
+  // hintStyle: TextStyle(
+  //   color: kTextColor
+  // ),
   hintText: '',
   contentPadding:
   EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

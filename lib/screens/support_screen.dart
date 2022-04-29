@@ -94,7 +94,7 @@ class SupportScreen extends StatelessWidget {
                            color: Colors.amberAccent,
                            size: 30.0,
                          ),
-                         label: Text('Sent SMS' ,style: TextStyle(color: Colors.black,fontSize: 16), ),
+                         label: Text('Send SMS' ,style: TextStyle(color: Colors.black,fontSize: 16), ),
                          ),
                          
                         ],),
