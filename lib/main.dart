@@ -2,6 +2,7 @@
 import 'package:ehjez/models/parking_location.dart';
 import 'package:ehjez/screens/booking_screen.dart';
 import 'package:ehjez/screens/favorite_screen.dart';
+import 'package:ehjez/screens/how_it_works_screen.dart';
 import 'package:ehjez/screens/map_screen.dart';
 import 'package:ehjez/screens/onboarding_screen.dart';
 
@@ -71,7 +72,7 @@ class Ehjez extends StatelessWidget {
           FavoriteScreen.id:(context) => FavoriteScreen(),
           SupportScreen.id:(context) => SupportScreen(),
           SettingsScreen.id:(context)=> SettingsScreen(),
-
+          HowItWorks.id:(context) => HowItWorks(),
           // PaymentScreen.id:(context) => PaymentScreen(),
 
          // BookingScreen.id:(context) => BookingScreen()

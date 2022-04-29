@@ -1,3 +1,4 @@
+import 'package:ehjez/screens/how_it_works_screen.dart';
 import 'package:ehjez/screens/settings_screen.dart';
 import 'package:ehjez/screens/support_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
@@ -74,7 +75,9 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'How it works',
             icon:Icons.info_outline,
-               onTap: (){}
+               onTap: (){
+                 Navigator.pushNamed(context, HowItWorks.id);
+               }
           ),
 
            buildMenuItem(
