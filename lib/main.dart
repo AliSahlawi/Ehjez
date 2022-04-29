@@ -66,14 +66,13 @@ class Ehjez extends StatelessWidget {
           LoginScreen.id :(context) => LoginScreen(),
           RegistrationScreen.id:(context) => RegistrationScreen(),
           MapScreen.id:(context) => MapScreen(),
-          ReviewScreen.id:(context) => ReviewScreen(),
           HistoryScreen.id:(context) => HistoryScreen(),
           FavoriteScreen.id:(context) => FavoriteScreen(),
           SupportScreen.id:(context) => SupportScreen(),
           SettingsScreen.id:(context)=> SettingsScreen(),
 
           // PaymentScreen.id:(context) => PaymentScreen(),
-
+          // ReviewScreen.id:(context) => ReviewScreen(),
          // BookingScreen.id:(context) => BookingScreen()
 
         },

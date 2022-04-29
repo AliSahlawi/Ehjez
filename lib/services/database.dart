@@ -104,57 +104,90 @@ class DatabaseService {
     return parkingLocationCollection
         .snapshots()
         .map((list) => list.docs.map((doc) {
-      final model = ParkingLocation.fromJson(doc.data());
-      // Setting the id value of the Parking Location object.
-      model.id = doc.id;
-      return model;
-    }).toList());
-
+              final model = ParkingLocation.fromJson(doc.data());
+              // Setting the id value of the Parking Location object.
+              model.id = doc.id;
+              return model;
+            }).toList());
   }
+
   Stream<List<User>> streamUsers() {
     return userCollection
         .snapshots()
         .map((list) => list.docs.map((doc) => User.fromJson(doc)).toList());
-
   }
+
   Stream<List<Reservation>> streamReservation(String userId) {
-    return reservationCollection.where('User',isEqualTo: userId)
+    return reservationCollection
+        .where('User', isEqualTo: userId)
         .snapshots()
         .map((list) => list.docs.map((doc) {
-      final model = Reservation.fromJson(doc.data());
-      // Setting the id value of the Parking Location object.
-      model.id = doc.id;
-      return model;
-    }).toList());
-
+              final model = Reservation.fromJson(doc.data());
+              // Setting the id value of the Parking Location object.
+              model.id = doc.id;
+              return model;
+            }).toList());
   }
 
-  addReservation(Reservation reservation){
-    return reservationCollection.add({
-      'Amount': reservation.amount,
-      'Location':reservation.location,
-      'StartDate':reservation.startDate,
-      'FinishDate':reservation.finishDate,
-      'User':reservation.user
-    }).then((value) => print('Reservation added')).catchError((onError)=> print(onError));
+  addReservation(Reservation reservation) {
+    return reservationCollection
+        .add({
+          'Amount': reservation.amount,
+          'Location': reservation.location,
+          'StartDate': reservation.startDate,
+          'FinishDate': reservation.finishDate,
+          'User': reservation.user
+        })
+        .then((value) => print('Reservation added'))
+        .catchError((onError) => print(onError));
   }
 
-  addToFavorite(String userId,String parkingLocationId){
-      final list = [parkingLocationId];
-    return userCollection.doc(userId).update(({'Favorites':FieldValue.arrayUnion(list)})).catchError((onError)=> print(onError));
-
-  }
-  removeFromFavorite(String userId,String parkingLocationId){
+  addToFavorite(String userId, String parkingLocationId) {
     final list = [parkingLocationId];
-    return userCollection.doc(userId).update(({'Favorites':FieldValue.arrayRemove(list)})).catchError((onError)=> print(onError));
-
+    return userCollection
+        .doc(userId)
+        .update(({'Favorites': FieldValue.arrayUnion(list)}))
+        .catchError((onError) => print(onError));
   }
 
-  isFavorite(String userId,String parkingLocationId) async{
+  removeFromFavorite(String userId, String parkingLocationId) {
+    final list = [parkingLocationId];
+    return userCollection
+        .doc(userId)
+        .update(({'Favorites': FieldValue.arrayRemove(list)}))
+        .catchError((onError) => print(onError));
+  }
+
+  isFavorite(String userId, String parkingLocationId) async {
     final user = await getUser(userId);
-    return user.favorites.contains(parkingLocationId)? true : false ;
+    return user.favorites.contains(parkingLocationId) ? true : false;
   }
 
-
-
+  addFeedback(
+      {required int rate,
+      required String string,
+      required DateTime time,
+      required String uid,
+      required String parkingLocationId}) async {
+    final user = await getUser(uid);
+    final data = [
+      {
+        'Rate': rate,
+        'String': string,
+        'Time': time,
+        'User': {
+          'email': user.email,
+          'name': user.name,
+          'phoneNum': user.phoneNum,
+          'plateNum': user.plateNum,
+          'type': user.type,
+          'favorites': user.favorites
+        }
+      }
+    ];
+    return parkingLocationCollection
+        .doc(parkingLocationId)
+        .update(({'Feedback': FieldValue.arrayUnion(data)}))
+        .catchError((onError) => print(onError));
+  }
 }

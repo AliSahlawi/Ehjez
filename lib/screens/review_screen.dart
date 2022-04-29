@@ -1,4 +1,8 @@
+
+
 import 'package:ehjez/constants.dart';
+import 'package:ehjez/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
@@ -6,13 +10,18 @@ import 'package:ehjez/constants.dart';
 
 class ReviewScreen extends StatefulWidget {
   static String id = 'review_screen';
+  final String parkingLocationId;
+  ReviewScreen({required this.parkingLocationId});
   @override
   State<StatefulWidget> createState() => _ReviewScreenState();
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
+
+  final auth = FirebaseAuth.instance;
   var rate = 0.0 ;
   DateTime postTime = DateTime.now();
+  String review = "";
   @override
   Widget build(BuildContext context) {
 
@@ -91,6 +100,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 width: 300 ,
 
                 child: TextField(
+                  onChanged: (value)=>setState(() {
+                    review = value;
+                  }),
                   minLines: 5 ,
                   maxLines: 20,
                   maxLength: 500,
@@ -112,7 +124,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
             padding:  EdgeInsets.only(top:size.height*0.08),
             child: Center(
               child: ElevatedButton(
-                onPressed: ()  {},
+                onPressed: ()  async{
+                  await DatabaseService().addFeedback(rate: rate.toInt(), string: review, time: postTime, uid: auth.currentUser!.uid, parkingLocationId: widget.parkingLocationId);
+                  Navigator.pop(context);
+                },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(10),
                   minimumSize: Size(300, 20),
