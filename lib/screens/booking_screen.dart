@@ -20,6 +20,8 @@ import 'package:ehjez/screens/payment_screen.dart';
 
 
 
+
+
 class BookingScreen extends StatefulWidget {
   static String id = 'booking_screen';
 
@@ -536,7 +538,9 @@ class _BookingScreenState extends State<BookingScreen> {
                     textStyle: const TextStyle(fontSize: 14),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, ReviewScreen.id);
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) =>  ReviewScreen(parkingLocationId: widget.parkingLocationId)
+                    ));
                   },
                   child: Text(
                     "Write Review",
@@ -573,7 +577,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                average.toString(),
+                                average.toStringAsPrecision(2),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 30,fontFamily: "Sukar"
