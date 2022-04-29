@@ -25,6 +25,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
           style: TextStyle(
             color: kTextColor,
             fontSize: 20,
+              fontFamily: "Sukar"
           ),
         ),
         centerTitle: true,
@@ -49,7 +50,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
               style: TextStyle(
                 color: kTextColor,
                 fontSize: 25,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
+                  fontFamily: "Sukar"
               ) ,),
           ),
           Padding(
@@ -57,7 +59,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
             child: Text("Tell others what you think ",
               style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 20
+                  fontSize: 20,
+                  fontFamily: "Sukar"
               ) ,),
           ),
           Padding(
@@ -114,7 +117,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   padding: EdgeInsets.all(10),
                   minimumSize: Size(300, 20),
                   primary: Colors.amber,
-                  textStyle: TextStyle(fontSize: 26),
+                  textStyle: TextStyle(fontSize: 26,fontFamily: "Sukar"),
                   onPrimary: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)
