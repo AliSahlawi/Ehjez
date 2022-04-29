@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 import 'map_screen.dart';
 
@@ -23,112 +26,180 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String name = "";
   String carNumber = "";
   String phoneNUmber = "";
-  late DateTime DOB = DateTime(1980,1,1);
+  String type = "";
+  String vehicle = "";
+  List<Map<String, dynamic>> _types = [
+    {
+      'value': 'SUV',
+      'label': 'SUV',
+    },
+    {
+      'value': 'Hatchback',
+      'label': 'Hatchback',
+    },
+    {
+      'value': 'Sedan',
+      'label': 'Sedan',
+    },
+    {
+      'value': 'MPV',
+      'label': 'MPV',
+    },
+    {
+      'value': 'Crossover',
+      'label': 'Crossover',
+    },
+    {
+      'value': 'Coupe',
+      'label': 'Coupe',
+    },
+    {
+      'value': 'Convertible',
+      'label': 'Convertible',
+    },
+  ];
+
+
+  late DateTime DOB = DateTime(1980, 1, 1);
 
   @override
   Widget build(BuildContext context) {
+    Size size  = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  'Register ',
-                  style: TextStyle(
-                      fontSize: 45.0,
-                      fontWeight: FontWeight.w900,
-                      color: kTextColor),
+        child: ListView(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(
+                  height: size.height * 0.08,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Register ',
+                      style: TextStyle(
+                          fontSize: 45.0,
+                          fontWeight: FontWeight.w900,
+                          color: kTextColor),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  decoration:
+                  kTextFieldDecoration.copyWith(hintText: 'Enter Your Email'),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  obscureText: true,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your password'),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  decoration:
+                  kTextFieldDecoration.copyWith(hintText: 'Enter your Name'),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    carNumber = value;
+                  },
+                  decoration:
+                  kTextFieldDecoration.copyWith(hintText: 'Enter your Car Number'),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    phoneNUmber = value;
+                  },
+                  decoration:
+                  kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your Phone Number'),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 20.0),
+                  decoration: BoxDecoration(
+                    border:Border.all(
+                      color: kTextColor,
+                      width: 1.0
+                    ) ,
+                    borderRadius: BorderRadius.all(Radius.circular(40.0))
+                  ),
+                  child: SelectFormField(
+                    items: _types,
+                    initialValue: '',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: kTextColor),
+                    hintText: 'Chose your Car Type',
+                    onChanged: (val)=> setState(() {
+                      type = val;
+                    }),
+
+                  ),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                RoundedButton(
+                    text: 'Register',
+                    onPress: () async {
+                      try {
+                        final newUser = await _auth.createUserWithEmailAndPassword(
+                            email: email, password: password);
+                        if (newUser != null) {
+                          //Navigator.pushNamed(context, AnyScreen.id);
+                          _firestore.collection('User').doc(newUser.user?.uid).set({
+                            'Name': name,
+                            'Email': email,
+                            'PhoneNum': phoneNUmber,
+                            'PlateNum': carNumber,
+                            'Favorites': [],
+                            'Type':type,
+                          });
+                          Navigator.pushNamed(context, MapScreen.id);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    }),
               ],
             ),
-            SizedBox(
-              height: 48.0,
-            ),
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter Your Email'),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              obscureText: true,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password.'),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                name = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter your Name.'),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                carNumber = value;
-              },
-              decoration:
-              kTextFieldDecoration.copyWith(hintText: 'Enter your Car Number.'),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                phoneNUmber = value;
-              },
-              decoration:
-              kTextFieldDecoration.copyWith(hintText: 'Enter your Phone Number.'),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            RoundedButton(
-                text: 'Register',
-                onPress: () async {
-                  try {
-                    final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: email, password: password);
-                    if (newUser != null) {
-                      //Navigator.pushNamed(context, AnyScreen.id);
-                      _firestore.collection('User').doc(newUser.user?.uid).set({
-                        'Name': name,
-                        'Email': email,
-                        'PhoneNum': phoneNUmber,
-                        'PlateNum':carNumber,
-                      });
-                      Navigator.pushNamed(context, MapScreen.id);
-                    
-
-                    }
-                  } catch (e) {
-                    print(e);
-                  }
-                }),
           ],
         ),
       ),

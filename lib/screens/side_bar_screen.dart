@@ -1,3 +1,6 @@
+
+
+import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ehjez/models/user.dart' as current_user;
@@ -89,7 +92,10 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'Logout',
             icon:Icons.logout,
-             onTap: (){}
+             onTap: ()async{
+              await auth.signOut();
+              Navigator.pushNamed(context, WelcomeScreen.id);
+             }
           ),
         ]),
       ),
