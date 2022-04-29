@@ -55,6 +55,7 @@ dependencies:
 
   qr_flutter: ^4.0.0
   select_form_field: ^2.2.0
+  regexpattern: ^2.0.1
 
 
 dev_dependencies:

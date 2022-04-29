@@ -3,11 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/components/rounded_button.dart';
+import 'package:ehjez/screens/map_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:select_form_field/select_form_field.dart';
+import 'package:regexpattern/regexpattern.dart';
 
-import 'map_screen.dart';
+
+
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
@@ -25,7 +28,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String password = "";
   String name = "";
   String carNumber = "";
-  String phoneNUmber = "";
+  String phoneNumber = "";
   String type = "";
   String vehicle = "";
   List<Map<String, dynamic>> _types = [
@@ -102,6 +105,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter Your Email'),
+                    onSubmitted:  (value){
+                      if(!value.isEmail())
+                      {
+                        print('not valid');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please a valid Email'),
+                          ),
+                        );
+                        setState(() {
+                          email = "";
+                        });
+                      }
+                    }
                 ),
                 SizedBox(
                   height: 8.0,
@@ -114,6 +131,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password'),
+                    onSubmitted:  (value){
+                      if(!value.isPasswordEasy())
+                      {
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please a valid Password'),
+                          ),
+                        );
+                        setState(() {
+                          password = "";
+                        });
+                      }
+                    }
+
                 ),
                 SizedBox(
                   height: 8.0,
@@ -125,6 +157,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your Name'),
+                  onSubmitted:  (value){
+                    if(!value.isUsername())
+                    {
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Please Enter a valid Name'),
+                        ),
+                      );
+                      setState(() {
+                        name = "";
+                      });
+                    }
+                  } ,
                 ),
                 SizedBox(
                   height: 8.0,
@@ -136,6 +182,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your Car Number'),
+                    onSubmitted:  (value){
+                      if(!value.isNumeric())
+                      {
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please Enter a valid Car Number'),
+                          ),
+                        );
+                        setState(() {
+                          carNumber = "";
+                        });
+                      }
+                    }
                 ),
                 SizedBox(
                   height: 8.0,
@@ -143,8 +203,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 TextField(
                   textAlign: TextAlign.center,
                   onChanged: (value) {
-                    phoneNUmber = value;
+                    phoneNumber = value;
                   },
+                  onSubmitted:  (value){
+                    if(!value.isPhone())
+                      {
+                        print('not valid');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please a valid Phone Number'),
+                          ),
+                        );
+                        setState(() {
+                          phoneNumber = "";
+                        });
+                      }
+                  } ,
                   decoration:
                   kTextFieldDecoration.copyWith(
                       hintText: 'Enter your Phone Number'),
@@ -179,23 +253,35 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 RoundedButton(
                     text: 'Register',
                     onPress: () async {
-                      try {
-                        final newUser = await _auth.createUserWithEmailAndPassword(
-                            email: email, password: password);
-                        if (newUser != null) {
-                          //Navigator.pushNamed(context, AnyScreen.id);
-                          _firestore.collection('User').doc(newUser.user?.uid).set({
-                            'Name': name,
-                            'Email': email,
-                            'PhoneNum': phoneNUmber,
-                            'PlateNum': carNumber,
-                            'Favorites': [],
-                            'Type':type,
-                          });
-                          Navigator.pushNamed(context, MapScreen.id);
+                      if(name!="" && email!="" && phoneNumber!="" && carNumber!="" && password!="" && type != '') {
+                        try {
+                          final newUser = await _auth
+                              .createUserWithEmailAndPassword(
+                              email: email, password: password);
+                          if (newUser != null) {
+                            //Navigator.pushNamed(context, AnyScreen.id);
+                            _firestore.collection('User')
+                                .doc(newUser.user?.uid)
+                                .set({
+                              'Name': name,
+                              'Email': email,
+                              'PhoneNum': phoneNumber,
+                              'PlateNum': carNumber,
+                              'Favorites': [],
+                              'Type': type,
+                            });
+                            Navigator.pushNamed(context, MapScreen.id);
+                          }
+                        } catch (e) {
+                          print(e);
                         }
-                      } catch (e) {
-                        print(e);
+                      }
+                      else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('One of the fields is missing !'),
+                          ),
+                        );
                       }
                     }),
               ],
