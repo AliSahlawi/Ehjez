@@ -87,7 +87,9 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'Settings',
             icon:Icons.settings_outlined,
-               onTap: (){}
+               onTap: (){
+                 Navigator.pushNamed(context, SupportScreen.id);
+               }
           ),
           SizedBox(height: size.height * 0.17),
            buildMenuItem(
