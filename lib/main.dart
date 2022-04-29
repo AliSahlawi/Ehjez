@@ -70,7 +70,7 @@ class Ehjez extends StatelessWidget {
           HistoryScreen.id:(context) => HistoryScreen(),
           FavoriteScreen.id:(context) => FavoriteScreen(),
           SupportScreen.id:(context) => SupportScreen(),
-          SettingsScreen.id:(context)=>SettingsScreen(),
+          SettingsScreen.id:(context)=> SettingsScreen(),
 
           // PaymentScreen.id:(context) => PaymentScreen(),
 

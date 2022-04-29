@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class SettingsScreen extends StatelessWidget {
-  static String id = 'support_screen';
+  static String id = 'settings_screen';
   const SettingsScreen({ Key? key }) : super(key: key);
 
   @override
