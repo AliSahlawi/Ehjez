@@ -244,10 +244,26 @@ class _BookingScreenState extends State<BookingScreen> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2022, 3, 1),
                                 lastDate: DateTime(2050)
-                            ))!;
+                            )
+                            )!;
 
-                            time0 = (await showTimePicker(context: context,
-                                initialTime: TimeOfDay.now()))!;
+                              if(date0.day >= DateTime.now().day) {
+                                time0 = (await showTimePicker(context: context,
+                                    initialTime: TimeOfDay.now()))!;
+
+                                if(date0.day == DateTime.now().day)//current day
+                                {
+                                  if(_toDouble(time0)<_toDouble(TimeOfDay.now())){
+                                    _showMyDialog("Wrong Time", "Please, Select Current Time or Time in Future");
+                                    time0 = TimeOfDay.now();
+                                  }
+                                }
+                              }
+                              else {
+                                _showMyDialog("Wrong Date", "Please, Select Today's Date or Date in Future");
+                                date0= DateTime.now();
+
+                              }
 
 
                             Arriving = DateTime(
@@ -320,9 +336,29 @@ class _BookingScreenState extends State<BookingScreen> {
                                 firstDate: DateTime(2022, 3, 1),
                                 lastDate: DateTime(2050)
                             ))!;
+                            if(date0.day >= date1.day) {
+                              time1 = (await showTimePicker(context: context,
+                                  initialTime: TimeOfDay.now()))!;
+                              print(_toDouble(time0));
+                              print(_toDouble(time1));
 
-                            time1 = (await showTimePicker(context: context,
-                                initialTime: TimeOfDay.now()))!;
+
+                              if(date0.day == date1.day)//current day
+                                  {
+                                if(_toDouble(time0)>_toDouble(time1)){
+                                  _showMyDialog("Wrong Time", "You Can't Leave Before Arrive");
+                                  time1 = TimeOfDay.now();
+                                }
+                              }
+                            }
+                            else {
+                              _showMyDialog("Wrong Date", "Please, Select Today's Date or Date in Future");
+                              date1= DateTime.now();
+
+                            }
+
+                         //   time1 = (await showTimePicker(context: context,
+                               // initialTime: TimeOfDay.now()))!;
 
 
                             leaving = DateTime(
@@ -728,6 +764,37 @@ class _BookingScreenState extends State<BookingScreen> {
       }
     }
   }
+
+  Future<void> _showMyDialog(String alertTitle , String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  Text(alertTitle),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children:  <Widget>[
+                Text(message ),
+
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  double _toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute/60.0 ;
+
 
 
 
