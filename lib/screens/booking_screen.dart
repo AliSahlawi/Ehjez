@@ -128,7 +128,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   },
                   icon: Icon(
                     isFav? Icons.favorite :  Icons.favorite_border ,
-                    color:isFav? Colors.red : Colors.grey,
+                    color:isFav? Colors.amber : Colors.grey,
                     size: 30.0,
                   ),
 
