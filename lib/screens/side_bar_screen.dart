@@ -1,3 +1,4 @@
+import 'package:ehjez/screens/support_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ehjez/models/user.dart' as current_user;
@@ -77,7 +78,9 @@ class _NavBarState extends State<NavBar> {
            buildMenuItem(
             text:'Support',
             icon:Icons.support_agent,
-               onTap: (){}
+               onTap: (){
+                 Navigator.pushNamed(context, SupportScreen.id);
+               }
           ),
           
            buildMenuItem(
