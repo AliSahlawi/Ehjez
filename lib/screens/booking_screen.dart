@@ -127,10 +127,12 @@ class _BookingScreenState extends State<BookingScreen> {
                     }
                   },
                   icon: Icon(
-                    Icons.favorite_border,
-                    color:isFav? kTextColor : Colors.grey,
+                    isFav? Icons.favorite :  Icons.favorite_border ,
+                    color:isFav? Colors.red : Colors.grey,
                     size: 30.0,
-                  ),);
+                  ),
+
+              );
           }
           return IconButton(
             onPressed: () {
