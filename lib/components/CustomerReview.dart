@@ -92,7 +92,7 @@ class customer_review extends StatelessWidget {
     }
     else if (duration>=60 && duration<3600){// if the duration in minutes
 
-      if(duration / 60 ==1 )
+      if(duration ~/ 60 ==1 )
         return "${duration ~/60} Minute ago ";
       else
         return "${duration ~/60} Minutes ago ";
