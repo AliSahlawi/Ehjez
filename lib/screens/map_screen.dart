@@ -319,7 +319,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                           ),
                         ),
                         Image(
-                            image: AssetImage("assets/images/locate_park.png"),
+                            image: NetworkImage(location.mainImage),
                             height: 150,
                             width: 150)
                       ],

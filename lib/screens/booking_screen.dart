@@ -155,10 +155,20 @@ class _BookingScreenState extends State<BookingScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image(
-                          image: AssetImage("assets/images/locate_park.png"),
-                          height: 150,
-                          width: 150),
+                      FutureBuilder<ParkingLocation>(
+                        future:DatabaseService()
+                            .getParkingLocation(widget.parkingLocationId) ,
+                        builder: (context, snapshot){
+                          if(snapshot.hasData)
+                          return Image(
+                            image: NetworkImage(snapshot.data!.mainImage),
+                            height: 150,
+                            width: 150);
+
+                          return CircularProgressIndicator();
+
+                        }
+                      ),
                       SizedBox(width: 20),
                       Expanded(
                         child: FutureBuilder<ParkingLocation>(
@@ -474,25 +484,19 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               Container(
                 height: 240,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: const [
-                    Image(
-                        image: AssetImage("assets/images/locate_park.png"),
-                        height: 240,
-                        width: 240),
-                    SizedBox(width: 40),
-                    Image(
-                        image: AssetImage("assets/images/locate_park.png"),
-                        height: 240,
-                        width: 240),
-                    SizedBox(width: 40),
-                    Image(
-                        image: AssetImage("assets/images/locate_park.png"),
-                        height: 240,
-                        width: 240),
-                    SizedBox(width: 40),
-                  ],
+                child: FutureBuilder<ParkingLocation>(
+                  future: DatabaseService()
+                      .getParkingLocation(widget.parkingLocationId),
+                  builder:(context,snapshot){
+                    if(snapshot.hasData)
+
+                    return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: getImages(snapshot.data!.images)
+                  );
+
+                    return CircularProgressIndicator();
+                  }
                 ),
               ),
               Padding(
@@ -789,6 +793,20 @@ class _BookingScreenState extends State<BookingScreen> {
         );
       },
     );
+  }
+
+  List<Widget> getImages(List images){
+      List<Widget> wid = [];
+    for(var image in images){
+      var newImage = Image(
+          image: NetworkImage(image),
+          height: 240,
+          width: 240);
+      wid.add(newImage);
+
+    }
+    return wid;
+
   }
 
   double _toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
