@@ -744,13 +744,15 @@ class _BookingScreenState extends State<BookingScreen> {
           amount: amount,
           startDate: Arriving!,
           finishDate: leaving!,
-          location: parkingLocationName,
+          location: widget.parkingLocationId,
           user: auth.currentUser!.uid);
+
+       await DatabaseService().addReservation(reservation);
 
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => PaymentScreen(reservation: reservation)),
+            builder: (context) => PaymentScreen(reservation: reservation,ParkingLocationName: parkingLocationName,)),
       );
     } catch (e) {
       if (e is StripeException) {
@@ -803,6 +805,9 @@ class _BookingScreenState extends State<BookingScreen> {
           height: 240,
           width: 240);
       wid.add(newImage);
+
+      var sizeBox = SizedBox(width: 40,);
+      wid.add(sizeBox);
 
     }
     return wid;

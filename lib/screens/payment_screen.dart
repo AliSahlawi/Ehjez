@@ -11,8 +11,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 class PaymentScreen extends StatelessWidget {
   static String id = 'payment_screen';
   Reservation reservation;
-
-  PaymentScreen({required this.reservation} );
+  final String ParkingLocationName;
+  PaymentScreen({required this.reservation,required this.ParkingLocationName});
 
 
 
@@ -37,19 +37,20 @@ class PaymentScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: kTextColor,
-                  ),
-                ),
-                SizedBox(
-                  width: size.width * 0.15,
-                ),
+              mainAxisAlignment:MainAxisAlignment.center ,
+              children: const [
+                // IconButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //   },
+                //   icon: Icon(
+                //     Icons.arrow_back,
+                //     color: kTextColor,
+                //   ),
+                // ),
+                // SizedBox(
+                //   width: size.width * 0.15,
+                // ),
                 Text(
                   'Payment success',
                   style: TextStyle(
@@ -80,7 +81,7 @@ class PaymentScreen extends StatelessWidget {
                               fontFamily: "Sukar"),
                         ),
                         Text(
-                          reservation.location,
+                          ParkingLocationName,
                           style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],

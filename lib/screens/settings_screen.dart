@@ -90,8 +90,8 @@ class SettingsScreen extends StatelessWidget {
   }){
     
     return Container(
-      height: MediaQuery.of(context).size.height*0.15,
-      width: MediaQuery.of(context).size.height*0.15,  
+      height: MediaQuery.of(context).size.height*0.18,
+      width: MediaQuery.of(context).size.height*0.18,
       decoration: BoxDecoration(
       color: Colors.white,
       border: Border.all(
