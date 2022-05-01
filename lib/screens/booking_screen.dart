@@ -36,7 +36,7 @@ class _BookingScreenState extends State<BookingScreen> {
   DateTime date0 = DateTime.now();
   DateTime date1 = DateTime.now();
   TimeOfDay time0 = TimeOfDay.now();
-  TimeOfDay time1 = TimeOfDay.now();
+  TimeOfDay time1 = TimeOfDay.now().replacing(hour: DateTime.now().hour+1 , minute: DateTime.now().minute );
   var myDuration = 0;
 
   DateTime? Arriving;
@@ -165,7 +165,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             child: Image(
                               image: NetworkImage(snapshot.data!.mainImage),
                               height: 150,
-                              width: 150),
+                              width: 180),
                           );
                           }
 

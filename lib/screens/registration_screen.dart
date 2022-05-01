@@ -31,7 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String phoneNumber = "";
   String type = "";
   String vehicle = "";
-  List<Map<String, dynamic>> _types = [
+  final List<Map<String, dynamic>> _types = [
     {
       'value': 'SUV',
       'label': 'SUV',

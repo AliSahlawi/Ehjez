@@ -13,6 +13,7 @@ import 'package:ehjez/screens/history_screen.dart';
 import 'package:ehjez/screens/settings_screen.dart';
 import 'package:ehjez/screens/splash_screen.dart';
 import 'package:ehjez/screens/support_screen.dart';
+import 'package:ehjez/screens/user_profile_screen.dart';
 import 'package:ehjez/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +60,7 @@ class Ehjez extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: WelcomeScreen(),
+        home: UserProfileScreen(),
         routes: {
           SplashScreen.id :(context) => SplashScreen(),
           OnBoardingScreen.id :(context) => OnBoardingScreen(),
@@ -74,7 +75,7 @@ class Ehjez extends StatelessWidget {
           HowItWorks.id:(context) => HowItWorks(),
           // PaymentScreen.id:(context) => PaymentScreen(),
           // ReviewScreen.id:(context) => ReviewScreen(),
-         // BookingScreen.id:(context) => BookingScreen()
+          //BookingScreen.id:(context) => BookingScreen()
 
         },
       ),
