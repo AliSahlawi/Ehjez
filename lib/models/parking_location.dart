@@ -16,17 +16,21 @@ class ParkingLocation {
   final List feedback;
   final double pricePerHour;
   final int rate;
+  final String mainImage;
+  final List images;
 
   ParkingLocation(
       {required this.name,
-      required this.description,
-      required this.available,
-      required this.capacity,
-      required this.latitude,
-      required this.longitude,
-      required this.feedback,
-      required this.pricePerHour,
-      required this.rate});
+        required this.description,
+        required this.available,
+        required this.capacity,
+        required this.latitude,
+        required this.longitude,
+        required this.feedback,
+        required this.pricePerHour,
+        required this.rate,
+        required this.images,
+        required this.mainImage});
 
   factory ParkingLocation.fromJson(jsonObject) {
     return ParkingLocation(
@@ -39,6 +43,8 @@ class ParkingLocation {
       feedback: jsonObject['Feedback'],
       pricePerHour: jsonObject['PricePerHour'] ,
       rate: jsonObject['Rate'] ,
+      mainImage: jsonObject['MainImage'],
+      images: jsonObject['images'],
     );
   }
 }
