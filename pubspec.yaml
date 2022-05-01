@@ -63,7 +63,7 @@ flutter_icons:
   ios: true
   image_path: "assets/images/logo.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/images/1024.png"
+  adaptive_icon_foreground: "assets/images/appLogo.png"
 
 
 dev_dependencies:
