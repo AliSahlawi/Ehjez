@@ -190,4 +190,11 @@ class DatabaseService {
         .update(({'Feedback': FieldValue.arrayUnion(data)}))
         .catchError((onError) => print(onError));
   }
+
+  Future<Reservation> getParkingImage(String parkingLocationID) async {
+    DocumentSnapshot documentSnapshot =
+    await reservationCollection.doc(parkingLocationID).get();
+    Reservation reservation = Reservation.fromJson(documentSnapshot.data());
+    return reservation;
+  }
 }

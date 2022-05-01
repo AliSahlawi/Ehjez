@@ -1,3 +1,5 @@
+import 'package:ehjez/screens/privacy_screen.dart';
+import 'package:ehjez/screens/terms_of_use_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -50,7 +52,9 @@ class SettingsScreen extends StatelessWidget {
                                 onTap: (){},
                                 child: Con(context: context, text: "Account", icon: Icons.person)),
                               GestureDetector(
-                                onTap: (){},
+                                onTap: (){
+                                  Navigator.pushNamed(context, TermsOfUse.id);
+                                },
                                 child: Con(context: context, text: "Terms of use ", icon: Icons.question_mark_rounded))
                             ],
                           ),
@@ -60,7 +64,9 @@ class SettingsScreen extends StatelessWidget {
                             children: [
                         
                               GestureDetector(
-                                onTap: (){},
+                                onTap: (){
+                                   Navigator.pushNamed(context, PrivacyScreen.id);
+                                },
                                 child: Con(context: context, text: "Privacy", icon: Icons.privacy_tip)),
                               Container( height: MediaQuery.of(context).size.height*0.15,
                                           width: MediaQuery.of(context).size.height*0.15,),
@@ -91,7 +97,9 @@ class SettingsScreen extends StatelessWidget {
     
     return Container(
       height: MediaQuery.of(context).size.height*0.18,
+
       width: MediaQuery.of(context).size.height*0.18,
+
       decoration: BoxDecoration(
       color: Colors.white,
       border: Border.all(

@@ -21,16 +21,19 @@ class ParkingLocation {
 
   ParkingLocation(
       {required this.name,
-      required this.description,
-      required this.available,
-      required this.capacity,
-      required this.latitude,
-      required this.longitude,
-      required this.feedback,
-      required this.pricePerHour,
-      required this.rate,
-      required this.images,
-      required this.mainImage});
+
+        required this.description,
+        required this.available,
+        required this.capacity,
+        required this.latitude,
+        required this.longitude,
+        required this.feedback,
+        required this.pricePerHour,
+        required this.rate,
+        required this.images,
+        required this.mainImage});
+
+
 
   factory ParkingLocation.fromJson(jsonObject) {
     return ParkingLocation(

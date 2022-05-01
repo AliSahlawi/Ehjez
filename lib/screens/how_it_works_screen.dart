@@ -10,6 +10,21 @@ class HowItWorks extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: kTextColor,
+                              ),
+                            ),
+        elevation: 0,
+        title: Text("How it works" , style: TextStyle(color: Colors.black, fontFamily: "Sukar", fontSize: 30),),                    
+        backgroundColor: Colors.white,
+        centerTitle:true,                    
+      ),
       body: Container(
         height: size.height,
         width: size.width,
@@ -22,28 +37,6 @@ class HowItWorks extends StatelessWidget {
               Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: kTextColor,
-                              ),
-                            ),
-                             SizedBox(
-                               width: size.width * 0.15,
-                             ),
-                            Text(
-                              'How it works',
-                              style: TextStyle(
-                                  color: Colors.black, fontFamily: "Sukar", fontSize: 30),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: size.height * 0.08,),
                         Column(
                           children: [
                             Row(

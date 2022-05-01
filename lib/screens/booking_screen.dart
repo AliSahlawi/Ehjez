@@ -159,11 +159,15 @@ class _BookingScreenState extends State<BookingScreen> {
                         future:DatabaseService()
                             .getParkingLocation(widget.parkingLocationId) ,
                         builder: (context, snapshot){
-                          if(snapshot.hasData)
-                          return Image(
-                            image: NetworkImage(snapshot.data!.mainImage),
-                            height: 150,
-                            width: 150);
+                          if(snapshot.hasData) {
+                            return Padding(
+                            padding:  EdgeInsets.only (left: size.width*0.05),
+                            child: Image(
+                              image: NetworkImage(snapshot.data!.mainImage),
+                              height: 150,
+                              width: 150),
+                          );
+                          }
 
                           return CircularProgressIndicator();
 
@@ -488,12 +492,17 @@ class _BookingScreenState extends State<BookingScreen> {
                   future: DatabaseService()
                       .getParkingLocation(widget.parkingLocationId),
                   builder:(context,snapshot){
-                    if(snapshot.hasData)
-
-                    return ListView(
+                    if(snapshot.hasData) {
+                      return ListView(
                     scrollDirection: Axis.horizontal,
-                    children: getImages(snapshot.data!.images)
+                    children: getImages(snapshot.data!.images,
+                      size.width*0.025,
+                      size.height*0.05,
+                      size.height*0.05,
+                      size.width*0.025
+                    )
                   );
+                    }
 
                     return CircularProgressIndicator();
                   }
@@ -797,13 +806,18 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  List<Widget> getImages(List images){
+  List<Widget> getImages(List images,double leftPad , double topPad , double bottomPad,double rightPad){
       List<Widget> wid = [];
     for(var image in images){
-      var newImage = Image(
+      var newImage = Padding(
+          padding: EdgeInsets.only(left: leftPad, bottom: bottomPad,top: topPad,right: rightPad),
+      child: Image(
+        fit: BoxFit.fill,
           image: NetworkImage(image),
-          height: 240,
-          width: 240);
+          height: 150,
+          width: 250)
+      );
+
       wid.add(newImage);
 
       var sizeBox = SizedBox(width: 40,);
