@@ -21,6 +21,7 @@ class ParkingLocation {
 
   ParkingLocation(
       {required this.name,
+
         required this.description,
         required this.available,
         required this.capacity,
@@ -31,6 +32,8 @@ class ParkingLocation {
         required this.rate,
         required this.images,
         required this.mainImage});
+
+
 
   factory ParkingLocation.fromJson(jsonObject) {
     return ParkingLocation(
