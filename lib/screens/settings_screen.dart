@@ -1,3 +1,5 @@
+
+
 import 'package:ehjez/screens/privacy_screen.dart';
 import 'package:ehjez/screens/terms_of_use_screen.dart';
 import 'package:ehjez/screens/user_profile_screen.dart';
@@ -51,7 +53,10 @@ class SettingsScreen extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Navigator.pushNamed(context, UserProfileScreen.id);
+
+
+                                  Navigator.pushNamed(context,UserProfileScreen.id);
+
                                 },
                                 child: Con(context: context, text: "Account", icon: Icons.person)),
                               GestureDetector(

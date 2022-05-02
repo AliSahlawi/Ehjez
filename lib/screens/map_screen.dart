@@ -279,7 +279,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15),
+                          padding:  EdgeInsets.only(top: size.height*0.02,left: size.width*0.04),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -318,10 +318,17 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                             ],
                           ),
                         ),
-                        Image(
-                            image: NetworkImage(location.mainImage),
-                            height: 150,
-                            width: 150)
+                        Padding(
+                          padding:  EdgeInsets.only(right: size.width*0.02),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image(fit: BoxFit.fill,
+                                image: NetworkImage(location.mainImage),
+                                height: 140,
+                                width: 140,
+                              ),
+                            )
+                        )
                       ],
                     ),
                   ),

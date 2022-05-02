@@ -111,7 +111,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         print('not valid');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please a valid Email'),
+                            content: Text('Please Enter a valid Email'),
                           ),
                         );
                         setState(() {
@@ -137,7 +137,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please a valid Password'),
+                            content: Text('Please Enter a valid Password'),
                           ),
                         );
                         setState(() {
@@ -158,7 +158,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your Name'),
                   onSubmitted:  (value){
-                    if(!value.isUsername())
+                    if(value.length < 3)
                     {
 
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -206,7 +206,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     phoneNumber = value;
                   },
                   onSubmitted:  (value){
-                    if(!value.isPhone())
+                    if(!value.isNumeric())
                       {
                         print('not valid');
                         ScaffoldMessenger.of(context).showSnackBar(
