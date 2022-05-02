@@ -221,7 +221,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   TextField(
                     textAlign: TextAlign.left,
                     onChanged: (value) {
-
+                        phoneNumber=value;
                     },
                     onSubmitted: (value) {
                       if (!value.isPhone()) {
