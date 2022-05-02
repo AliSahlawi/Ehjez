@@ -265,7 +265,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                    //if(name != "" && email!="" && carNumber!="" && phoneNumber!="" ) {
+                    if(name != "" && email!="" && carNumber!="" && phoneNumber!="" ) {
                       DatabaseService().updateUser(
                           name: name,
                           email: email,
@@ -274,8 +274,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           uid: auth.currentUser!.uid);
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text(
-                            'Your information was updated successfully ' ,
+                        SnackBar(content: Text(
+                          'Your information was updated successfully ',
                           style: TextStyle(color: Colors.black),
                         ),
                           backgroundColor: Colors.amber,
@@ -283,8 +283,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
 
                       );
-
-
+                    }
                     },
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(10),
