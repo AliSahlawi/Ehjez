@@ -197,4 +197,16 @@ class DatabaseService {
     Reservation reservation = Reservation.fromJson(documentSnapshot.data());
     return reservation;
   }
+
+  updateUser({required String name,required String email ,required String plateNum, required String phoneNum, required String type,required String uid}){
+
+    userCollection.doc(uid).update({
+      'Email':email,
+      'Name':name,
+      'PlateNum': plateNum,
+      'PhoneNum': phoneNum,
+      'Type':type,
+    }).catchError((onError)=> print(onError));
+  }
+
 }

@@ -65,7 +65,7 @@ class Ehjez extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: UserProfileScreen(),
+        home: WelcomeScreen(),
         routes: {
           SplashScreen.id :(context) => SplashScreen(),
           OnBoardingScreen.id :(context) => OnBoardingScreen(),
@@ -80,6 +80,7 @@ class Ehjez extends StatelessWidget {
           HowItWorks.id:(context) => HowItWorks(),
           TermsOfUse.id:(context) => TermsOfUse(),
           PrivacyScreen.id:(context) => PrivacyScreen(),
+          UserProfileScreen.id:(context) => UserProfileScreen(),
           // PaymentScreen.id:(context) => PaymentScreen(),
           // ReviewScreen.id:(context) => ReviewScreen(),
           //BookingScreen.id:(context) => BookingScreen()
