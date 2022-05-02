@@ -1,5 +1,6 @@
 import 'package:ehjez/screens/privacy_screen.dart';
 import 'package:ehjez/screens/terms_of_use_screen.dart';
+import 'package:ehjez/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -49,7 +50,9 @@ class SettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               GestureDetector(
-                                onTap: (){},
+                                onTap: (){
+                                  Navigator.pushNamed(context, UserProfileScreen.id);
+                                },
                                 child: Con(context: context, text: "Account", icon: Icons.person)),
                               GestureDetector(
                                 onTap: (){
