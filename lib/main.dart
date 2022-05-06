@@ -39,6 +39,10 @@ import 'package:http/http.dart' as http;
 void main() async{
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   Stripe.publishableKey = "pk_test_51KqjRyAe0UDOMehKeupVi1gt6P4IQPdsbYskuX1zu1flCDiYtrOvj6ioZ63yTLn2sduli6khQpgxCg43eHEFGXqy00rAwmJL0B";
   await Stripe.instance.applySettings();
   await Firebase.initializeApp();
