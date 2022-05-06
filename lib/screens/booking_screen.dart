@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:ehjez/components/CustomerReview.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/models/parking_location.dart';
@@ -7,11 +7,11 @@ import 'package:ehjez/models/reservation.dart';
 import 'package:ehjez/screens/review_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ehjez/models/user.dart' as current_user;
-import 'package:flutter/cupertino.dart';
+
 import 'package:ehjez/services/database.dart';
-import 'package:provider/provider.dart';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -43,7 +43,7 @@ class _BookingScreenState extends State<BookingScreen> {
   DateTime? leaving;
   final auth = FirebaseAuth.instance;
   var uid;
-  User? _User;
+
   static const rowSpacer = TableRow(children: [
     SizedBox(
       height: 15,
@@ -65,7 +65,7 @@ class _BookingScreenState extends State<BookingScreen> {
     Size size = MediaQuery.of(context).size;
 
     // var users = Provider.of<List<current_user.User>>(context);
-    var locations = Provider.of<List<ParkingLocation>>(context);
+ //   var locations = Provider.of<List<ParkingLocation>>(context);
 
     // TODO: implement build
     return Scaffold(

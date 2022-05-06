@@ -1,5 +1,8 @@
 
 
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ehjez/constants.dart';
 import 'package:ehjez/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,12 +25,49 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
 
   final auth = FirebaseAuth.instance;
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection('User');
 
 
   String email = "";
   String name = "";
   String carNumber = "";
   String phoneNumber = "";
+  late String dbEmail ;
+  late String dbName ;
+  late String dbCarNumber ;
+  late String dbPhoneNumber ;
+  TextEditingController emailCtrl =TextEditingController();
+  TextEditingController nameCtrl =TextEditingController();
+  TextEditingController carNumberCtrl =TextEditingController();
+  TextEditingController phoneNumCtrl =TextEditingController();
+
+  late final StreamSubscription myStream;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    myStream = userCollection
+        .doc(auth.currentUser!.uid)
+        .snapshots()
+        .listen((snapshot)  {
+          emailCtrl.text= current_user.User.fromJson(snapshot).email;
+          nameCtrl.text = current_user.User.fromJson(snapshot).name;
+          carNumberCtrl.text = current_user.User.fromJson(snapshot).plateNum;
+          phoneNumCtrl.text = current_user.User.fromJson(snapshot).phoneNum;
+          dbEmail= current_user.User.fromJson(snapshot).email;
+          dbName = current_user.User.fromJson(snapshot).name;
+          dbCarNumber= current_user.User.fromJson(snapshot).plateNum;
+          dbPhoneNumber = current_user.User.fromJson(snapshot).phoneNum;
+        });
+
+
+
+  }
+
+
+
 
 
   @override
@@ -69,6 +109,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
            future: DatabaseService().getUser(auth.currentUser!.uid),
            builder: (context,snapshot) {
              if(snapshot.hasData){
+
              return Column(
 
                 children: [
@@ -94,12 +135,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           textAlign: TextAlign.left,
                           onChanged: (value) {
                             email = value;
+
                           },
-                          controller: TextEditingController.fromValue(
-                            TextEditingValue(
-                              text: snapshot.data!.email,
-                            ),
-                          ),
+
+                           controller: emailCtrl,
+
                           decoration:
                           kTextFieldDecoration.copyWith(
                             prefixIcon: Padding(
@@ -145,11 +185,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     onChanged: (value) {
                       name = value;
                     },
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: snapshot.data!.name,
-                      ),
-                    ),
+                    controller: nameCtrl,
                     decoration:
                     kTextFieldDecoration.copyWith(prefixIcon: Padding(
                         padding: EdgeInsets.only(left: 15, top: 14),
@@ -184,11 +220,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       onChanged: (value) {
                         carNumber = value;
                       },
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: snapshot.data!.plateNum,
-                        ),
-                      ),
+                      controller: carNumberCtrl,
                       decoration:
                       kTextFieldDecoration.copyWith(prefixIcon: Padding(
                           padding: EdgeInsets.only(left: 15, top: 13),
@@ -236,11 +268,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         });
                       }
                     },
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: snapshot.data!.phoneNum,
-                      ),
-                    ),
+                    controller: phoneNumCtrl,
 
                     decoration:
                     kTextFieldDecoration.copyWith(
@@ -265,13 +293,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                    if(name != "" && email!="" && carNumber!="" && phoneNumber!="" ) {
-                      DatabaseService().updateUser(
+                      print("Updated Email is $email | Email from DB is $dbEmail" );
+                      print("Updated name is $name | name from DB is $dbName" );
+                      print("Updated car number is $carNumber | car number from DB is $dbCarNumber" );
+                      print("Updated phoneNum is $phoneNumber | phoneNum from DB is $dbPhoneNumber" );
+                if(!(email.isEmpty && name.isEmpty&& carNumber.isEmpty&& phoneNumber.isEmpty)) {
+                  DatabaseService().updateUser(
                           name: name,
                           email: email,
                           plateNum: carNumber,
                           phoneNum: phoneNumber,
                           uid: auth.currentUser!.uid);
+
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(
@@ -283,7 +316,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
 
                       );
-                    }
+                }
+                else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(
+                      'You miss something ',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                      backgroundColor: Colors.amber,
+
+                    ),
+
+                  );
+
+                }
+
                     },
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(10),

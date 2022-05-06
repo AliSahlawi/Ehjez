@@ -108,7 +108,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onSubmitted:  (value){
                       if(!value.isEmail())
                       {
-                        print('not valid');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Please Enter a valid Email'),
