@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
 import 'package:ehjez/constants.dart';
@@ -30,7 +30,114 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String carNumber = "";
   String phoneNumber = "";
   String type = "";
-  String vehicle = "";
+
+  TextEditingController emailCtrl =TextEditingController();
+  TextEditingController passwordCtrl =TextEditingController();
+  TextEditingController nameCtrl =TextEditingController();
+  TextEditingController carNumberCtrl =TextEditingController();
+  TextEditingController phoneNumCtrl =TextEditingController();
+
+
+  late FocusNode focusNodeEmail;
+  late FocusNode focusNodePassword;
+  late FocusNode focusNodeName;
+  late FocusNode focusNodeCarNumber;
+  late FocusNode focusNodePhoneNumber;
+
+
+
+
+  @override
+  void initState(){
+    super.initState();
+    focusNodeEmail = FocusNode();
+    focusNodePassword=FocusNode();
+    focusNodeName = FocusNode();
+    focusNodeCarNumber = FocusNode();
+    focusNodePhoneNumber= FocusNode();
+
+    focusNodeEmail.addListener(() {
+      if(!focusNodeEmail.hasFocus){
+        if(!email.isEmail())
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please Enter a valid Email'),
+            ),
+          );
+
+            emailCtrl.clear();
+
+        }
+      }
+    });
+
+    focusNodePassword.addListener(() {
+      if(!focusNodePassword.hasFocus){
+        if(!password.isPasswordEasy())
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please Enter a valid Password'),
+            ),
+          );
+
+         passwordCtrl.clear();
+
+        }
+      }
+    });
+
+    focusNodeName.addListener(() {
+      if(!focusNodeName.hasFocus){
+        if(name.length<3)
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please Enter a valid Name'),
+            ),
+          );
+
+         nameCtrl.clear();
+
+        }
+      }
+    });
+
+    focusNodeCarNumber.addListener(() {
+      if(!focusNodeCarNumber.hasFocus){
+        if(!carNumber.isNumeric())
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please Enter a Valid Car Number'),
+            ),
+          );
+
+          carNumberCtrl.clear();
+        }
+      }
+    });
+
+    focusNodePhoneNumber.addListener(() {
+      if(!focusNodePhoneNumber.hasFocus){
+        if(!phoneNumber.isNumeric())
+        {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Please Enter a Valid Phone Number'),
+            ),
+          );
+
+          phoneNumCtrl.clear();
+
+        }
+      }
+    });
+
+
+
+  }
   final List<Map<String, dynamic>> _types = [
     {
       'value': 'SUV',
@@ -103,21 +210,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onChanged: (value) {
                     email = value;
                   },
+                  focusNode: focusNodeEmail,
+                  controller: emailCtrl,
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter Your Email'),
-                    onSubmitted:  (value){
-                      if(!value.isEmail())
-                      {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please Enter a valid Email'),
-                          ),
-                        );
-                        setState(() {
-                          email = "";
-                        });
-                      }
-                    }
+                    // onSubmitted:  (value){
+                    //   if(!value.isEmail())
+                    //   {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text('Please Enter a valid Email'),
+                    //       ),
+                    //     );
+                    //     setState(() {
+                    //       email = "";
+                    //     });
+                    //   }
+                    // }
                 ),
                 SizedBox(
                   height: 8.0,
@@ -128,22 +237,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onChanged: (value) {
                     password = value;
                   },
+                  focusNode: focusNodePassword,
+                  controller: passwordCtrl,
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password'),
-                    onSubmitted:  (value){
-                      if(!value.isPasswordEasy())
-                      {
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please Enter a valid Password'),
-                          ),
-                        );
-                        setState(() {
-                          password = "";
-                        });
-                      }
-                    }
+                    // onSubmitted:  (value){
+                    //   if(!value.isPasswordEasy())
+                    //   {
+                    //
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text('Please Enter a valid Password'),
+                    //       ),
+                    //     );
+                    //     setState(() {
+                    //       password = "";
+                    //     });
+                    //   }
+                    // }
 
                 ),
                 SizedBox(
@@ -154,22 +265,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onChanged: (value) {
                     name = value;
                   },
+                  focusNode: focusNodeName,
+                  controller: nameCtrl,
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your Name'),
-                  onSubmitted:  (value){
-                    if(value.length < 3)
-                    {
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please Enter a valid Name'),
-                        ),
-                      );
-                      setState(() {
-                        name = "";
-                      });
-                    }
-                  } ,
+                  // onSubmitted:  (value){
+                  //   if(value.length < 3)
+                  //   {
+                  //
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //       SnackBar(
+                  //         content: Text('Please Enter a valid Name'),
+                  //       ),
+                  //     );
+                  //     setState(() {
+                  //       name = "";
+                  //     });
+                  //   }
+                  // } ,
                 ),
                 SizedBox(
                   height: 8.0,
@@ -179,22 +292,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onChanged: (value) {
                     carNumber = value;
                   },
+                  focusNode: focusNodeCarNumber,
+                  controller: carNumberCtrl,
                   decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter your Car Number'),
-                    onSubmitted:  (value){
-                      if(!value.isNumeric())
-                      {
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please Enter a valid Car Number'),
-                          ),
-                        );
-                        setState(() {
-                          carNumber = "";
-                        });
-                      }
-                    }
+                    // onSubmitted:  (value){
+                    //   if(!value.isNumeric())
+                    //   {
+                    //
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text('Please Enter a valid Car Number'),
+                    //       ),
+                    //     );
+                    //     setState(() {
+                    //       carNumber = "";
+                    //     });
+                    //   }
+                    // }
                 ),
                 SizedBox(
                   height: 8.0,
@@ -204,20 +319,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onChanged: (value) {
                     phoneNumber = value;
                   },
-                  onSubmitted:  (value){
-                    if(!value.isNumeric())
-                      {
-                        print('not valid');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please a valid Phone Number'),
-                          ),
-                        );
-                        setState(() {
-                          phoneNumber = "";
-                        });
-                      }
-                  } ,
+                  focusNode: focusNodePhoneNumber,
+                  controller: phoneNumCtrl,
+                  // onSubmitted:  (value){
+                  //   if(!value.isNumeric())
+                  //     {
+                  //       print('not valid');
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(
+                  //           content: Text('Please a valid Phone Number'),
+                  //         ),
+                  //       );
+                  //       setState(() {
+                  //         phoneNumber = "";
+                  //       });
+                  //     }
+                  // } ,
                   decoration:
                   kTextFieldDecoration.copyWith(
                       hintText: 'Enter your Phone Number'),
@@ -252,25 +369,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 RoundedButton(
                     text: 'Register',
                     onPress: () async {
-                      if(name!="" && email!="" && phoneNumber!="" && carNumber!="" && password!="" && type != '') {
+                      if(name.isNotEmpty && email.isNotEmpty&& phoneNumber.isNotEmpty && carNumber.isNotEmpty && password.isNotEmpty && type.isNotEmpty) {
                         try {
                           final newUser = await _auth
                               .createUserWithEmailAndPassword(
                               email: email, password: password);
-                          if (newUser != null) {
-                            //Navigator.pushNamed(context, AnyScreen.id);
-                            _firestore.collection('User')
-                                .doc(newUser.user?.uid)
-                                .set({
-                              'Name': name,
-                              'Email': email,
-                              'PhoneNum': phoneNumber,
-                              'PlateNum': carNumber,
-                              'Favorites': [],
-                              'Type': type,
-                            });
-                            Navigator.pushNamed(context, MapScreen.id);
-                          }
+                          _firestore.collection('User')
+                              .doc(newUser.user?.uid)
+                              .set({
+                            'Name': name,
+                            'Email': email,
+                            'PhoneNum': phoneNumber,
+                            'PlateNum': carNumber,
+                            'Favorites': [],
+                            'Type': type,
+                          });
+                          Navigator.pushNamed(context, MapScreen.id);
                         } catch (e) {
                           print(e);
                         }
