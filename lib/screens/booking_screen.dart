@@ -626,12 +626,13 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     for (var feedback in snapshot.data!.feedback)
-                      customer_review(
-                        customerName: feedback['User']['name'],
-                        feedback: feedback['String'],
-                        rate: feedback['Rate'],
-                        time: feedback['Time'],
-                      ),
+                         customer_review(
+                          customerName: feedback['User']['name'],
+                          feedback: feedback['String'],
+                          rate: feedback['Rate'],
+                          time: feedback['Time'],
+                        ),
+
                   ],
                 );
               }),

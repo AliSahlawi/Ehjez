@@ -82,8 +82,8 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                     ),
                     card,
                     Positioned(
-                      right: size.width * 0.058,
-                      top: size.height - size.height * 95 / 100,
+                     right: size.width * 0.058,
+                     top: size.height - size.height * 95 / 100,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -109,57 +109,61 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                           SizedBox(
                             width: 195,
                           ),
-                          Container(
-                            height: size.height * 0.08,
-                            width: size.width * 0.25,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.white),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.directions_car_rounded),
-                                    SizedBox(
-                                      width: 3,
-                                    ),
-                                    Column(
+                          FittedBox(
+                            child: Container(
+                            //  height: size.height * 0.08,
+                            //  width: size.width * 0.25,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'My Car',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Sukar"),
+                                        Icon(Icons.directions_car_rounded),
+                                        SizedBox(
+                                          width: 3,
                                         ),
-                                        FutureBuilder<current_user.User>(
-                                            future: DatabaseService()
-                                                .getUser(auth.currentUser!.uid),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.hasData) {
-                                                return Text(
-                                                  snapshot.data!.plateNum,
-                                                  style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 13),
-                                                );
-                                              }
-                                              print(snapshot.data);
-                                              return Text(
+                                        Column(
+                                          children: [
+                                            Text(
+                                              'My Car',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: "Sukar"),
+                                            ),
+                                            FutureBuilder<current_user.User>(
+                                                future: DatabaseService()
+                                                    .getUser(auth.currentUser!.uid),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return Text(
+                                                      snapshot.data!.plateNum,
+                                                      style: TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 13),
+                                                    );
+                                                  }
+                                                  print(snapshot.data);
+                                                  return Text(
 
-                                                "8888",
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 13),
-                                              );
-                                            }),
-                                      ],
-                                    )
-                                  ]),
+                                                    "8888",
+                                                    style: TextStyle(
+                                                        color: Colors.grey,
+                                                        fontSize: 13),
+                                                  );
+                                                }),
+                                          ],
+                                        )
+                                      ]),
+                                ),
+                              ),
                             ),
                           ),
 

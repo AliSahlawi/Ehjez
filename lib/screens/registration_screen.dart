@@ -63,6 +63,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Please Enter a valid Email'),
+                backgroundColor: Colors.redAccent
             ),
           );
 
@@ -79,6 +80,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Please Enter a valid Password'),
+              backgroundColor: Colors.redAccent,
             ),
           );
 
@@ -90,11 +92,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     focusNodeName.addListener(() {
       if(!focusNodeName.hasFocus){
-        if(name.length<3)
+        if(name.length<3 && name.length<12)
         {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please Enter a valid Name'),
+              content: Text('Your Name is to short'),
+                backgroundColor: Colors.redAccent
             ),
           );
 
@@ -110,7 +113,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please Enter a Valid Car Number'),
+              content: Text('Please Enter a valid Car Number'),
+                backgroundColor: Colors.redAccent
             ),
           );
 
@@ -125,7 +129,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please Enter a Valid Phone Number'),
+              content: Text('Please Enter a valid Phone Number'),
+                backgroundColor: Colors.redAccent
             ),
           );
 
@@ -197,7 +202,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       style: TextStyle(
                           fontSize: 45.0,
                           fontWeight: FontWeight.w900,
-                          color: kTextColor),
+                          color: kTextColor,
+
+                      ),
                     ),
                   ],
                 ),
