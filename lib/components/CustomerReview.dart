@@ -68,7 +68,7 @@ class customer_review extends StatelessWidget {
               ],
             ),
             Padding(
-              padding:  EdgeInsets.only(left: size.width*0.1,top: size.height*0.02),
+              padding:  EdgeInsets.only(left: size.width*0.25,top: size.height*0.02),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:  [

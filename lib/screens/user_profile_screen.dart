@@ -293,10 +293,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      print("Updated Email is $email | Email from DB is $dbEmail" );
-                      print("Updated name is $name | name from DB is $dbName" );
-                      print("Updated car number is $carNumber | car number from DB is $dbCarNumber" );
-                      print("Updated phoneNum is $phoneNumber | phoneNum from DB is $dbPhoneNumber" );
+
                 if(!(email.isEmpty && name.isEmpty&& carNumber.isEmpty&& phoneNumber.isEmpty)) {
                   DatabaseService().updateUser(
                           name: name,
