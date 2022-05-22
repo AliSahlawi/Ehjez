@@ -118,7 +118,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
           );
 
-          carNumberCtrl.clear();
+            carNumberCtrl.clear();
+
+
         }
       }
     });
@@ -391,7 +393,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             'Favorites': [],
                             'Type': type,
                           });
-                          Navigator.pushNamed(context, MapScreen.id);
+                         // Navigator.pushNamed(context, MapScreen.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Your are Registered Successfully'),
+                              backgroundColor: Colors.lightGreenAccent[700],
+                            ),
+                          );
                         } catch (e) {
                           print(e);
                         }

@@ -28,10 +28,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('User');
 
 
-  String email = "";
-  String name = "";
-  String carNumber = "";
-  String phoneNumber = "";
+  late String email ;
+  late String name ;
+  late String   carNumber ;
+  late String phoneNumber ;
   late String dbEmail ;
   late String dbName ;
   late String dbCarNumber ;
@@ -56,6 +56,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           nameCtrl.text = current_user.User.fromJson(snapshot).name;
           carNumberCtrl.text = current_user.User.fromJson(snapshot).plateNum;
           phoneNumCtrl.text = current_user.User.fromJson(snapshot).phoneNum;
+          email = emailCtrl.text;
+          name= nameCtrl.text;
+          carNumber = carNumberCtrl.text;
+          phoneNumber= phoneNumCtrl.text;
+
           dbEmail= current_user.User.fromJson(snapshot).email;
           dbName = current_user.User.fromJson(snapshot).name;
           dbCarNumber= current_user.User.fromJson(snapshot).plateNum;

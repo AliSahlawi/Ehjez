@@ -39,8 +39,8 @@ class _BookingScreenState extends State<BookingScreen> {
   TimeOfDay time1 = TimeOfDay.now().replacing(hour: DateTime.now().hour+1 , minute: DateTime.now().minute );
   var myDuration = 0;
 
-  DateTime? Arriving;
-  DateTime? leaving;
+  DateTime Arriving = DateTime.now();
+  DateTime leaving = DateTime.now().add(Duration(hours: 1));
   final auth = FirebaseAuth.instance;
   var uid;
 
@@ -260,6 +260,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   setState(() {
                                     time0 = TimeOfDay.now();
                                     myDuration = 0;
+
                                   });
                                 }
                               }
@@ -279,6 +280,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             if (Arriving != null) {
                               setState(() {
                                 time0 = TimeOfDay.fromDateTime(Arriving!);
+                                myDuration = duration();
                               });
                             }
                           },
@@ -373,7 +375,6 @@ class _BookingScreenState extends State<BookingScreen> {
 
                                 setState(() {
                                   time1 = TimeOfDay.fromDateTime(leaving!);
-                                  print(duration());
                                   myDuration = duration();
                                 });
                               }
@@ -701,14 +702,18 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   int duration() {
-    int daysDifference = date1.difference(date0).inMinutes;
-    int hoursDifference = (time1.hour - time0.hour);
-    int minutesDifference = (time1.minute - time0.minute);
-    int totalMin = (hoursDifference * 60 + minutesDifference);
+
+
+    int daysDifference = leaving.difference(Arriving).inDays *1440;
+    int hoursDifference = (leaving.hour - Arriving.hour);
+    if(hoursDifference<0)
+      return 0;
+    int minutesDifference = (leaving.minute - Arriving.minute);
+    int totalMin = (hoursDifference * 60 + minutesDifference+ daysDifference);
     //int minutes = totalMin % 60;
     // int hours = totalMin - minutes;
 
-    return (totalMin + daysDifference); // return duration in minutes ;
+    return (totalMin); // return duration in minutes ;
   }
 
   String durationToString(int minutes) {
