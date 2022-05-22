@@ -46,7 +46,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 height: size.height,
 
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 25, 15, 25),
+                  padding:  EdgeInsets.fromLTRB(size.width * 0.03, size.width * 0.045, size.width * 0.025, size.width * 0.025),
                   child: Column(
 
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +78,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       for(var location in snapshot.data!.favorites)
 
                         Container(
-
+                          margin: EdgeInsets.only(bottom: size.height * 0.01),
                           height: size.height * 0.15,
                           width: size.width * 0.9,
                           decoration: BoxDecoration(
@@ -90,7 +90,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               )
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding:  EdgeInsets.all(size.height * 0.018),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
