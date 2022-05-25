@@ -91,8 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       //print(user.user?.email);
 
                     }
-                  } catch (e) {
-                    print(e);
+                  } on FirebaseAuthException catch  (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.message as String),
+                        backgroundColor: Colors.redAccent[700],
+                      ),
+                    );
                   }
                 }),
 

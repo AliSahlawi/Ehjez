@@ -291,7 +291,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                                 location.name,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "Sukar"),
                               ),
@@ -299,7 +299,7 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                                 height: 3,
                               ),
                               Text(
-                                'Rd 2404,Muharraq',
+                                location.address,
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 16),
                               ),
@@ -328,8 +328,8 @@ final GlobalKey<ScaffoldState> _key = GlobalKey();
                               borderRadius: BorderRadius.circular(20),
                               child: Image(fit: BoxFit.fill,
                                 image: NetworkImage(location.mainImage),
-                                height: 140,
-                                width: 140,
+                                height: 100,
+                                width: 100,
                               ),
                             )
                         )

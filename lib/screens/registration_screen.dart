@@ -400,6 +400,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               backgroundColor: Colors.lightGreenAccent[700],
                             ),
                           );
+                          Navigator.pushNamed(context, MapScreen.id);
                         } catch (e) {
                           print(e);
                         }

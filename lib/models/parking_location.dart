@@ -18,6 +18,7 @@ class ParkingLocation {
   final int rate;
   final String mainImage;
   final List images;
+  final String address;
 
   ParkingLocation(
       {required this.name,
@@ -31,7 +32,8 @@ class ParkingLocation {
         required this.pricePerHour,
         required this.rate,
         required this.images,
-        required this.mainImage});
+        required this.mainImage,
+      required this.address});
 
 
 
@@ -48,6 +50,7 @@ class ParkingLocation {
       rate: jsonObject['Rate'] ,
       mainImage: jsonObject['MainImage'],
       images: jsonObject['images'],
+      address: jsonObject['Address'],
     );
   }
 }

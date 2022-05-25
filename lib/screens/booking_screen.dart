@@ -417,26 +417,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             TableRow(
                               children: [
                                 Text(
-                                  "Vehicle",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontFamily: "Sukar"),
-                                ),
-                                Text(
-                                  snapshot.data!.name,
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                      fontFamily: "Sukar"),
-                                ),
-                              ],
-                            ),
-                            rowSpacer,
-                            TableRow(
-                              children: [
-                                Text(
-                                  "Type",
+                                  "Car Type",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20,
@@ -517,14 +498,26 @@ class _BookingScreenState extends State<BookingScreen> {
                       fontSize: 26, color: kTextColor, fontFamily: "Sukar"),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: size.width * 0.08, top: size.height * 0.02),
-                child: Text(
-                  "text text text",
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.black, fontFamily: "Sukar"),
-                ),
+      FutureBuilder<ParkingLocation>(
+          future: DatabaseService()
+              .getParkingLocation(widget.parkingLocationId),
+          builder:(context,snapshot){
+            if(snapshot.hasData)
+              {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      left: size.width * 0.08, top: size.height * 0.02),
+                  child: Text(
+                    snapshot.data!.description,
+                    style: TextStyle(
+                        fontSize: 20, color: Colors.black, fontFamily: "Sukar"),
+                  ),
+                );
+              }
+            else{
+              return CircularProgressIndicator();
+            }
+          }
               ),
               SizedBox(
                 height: 20,
@@ -633,6 +626,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           rate: feedback['Rate'],
                           time: feedback['Time'],
                         ),
+
 
                   ],
                 );

@@ -6,11 +6,13 @@ import 'package:ehjez/models/reservation.dart';
 class DatabaseService {
   // collection reference
   final CollectionReference userCollection =
-      FirebaseFirestore.instance.collection('User');
+  FirebaseFirestore.instance.collection('User');
   final CollectionReference parkingLocationCollection =
-      FirebaseFirestore.instance.collection('ParkingLocation');
+  FirebaseFirestore.instance.collection('ParkingLocation');
   final CollectionReference reservationCollection =
-      FirebaseFirestore.instance.collection('Reservation');
+  FirebaseFirestore.instance.collection('Reservation');
+  final CollectionReference paymentCollection =
+  FirebaseFirestore.instance.collection('Payment');
 
   Future<List<User>> getUsers() async {
     // Get docs from collection reference
@@ -67,9 +69,9 @@ class DatabaseService {
 
   Future<ParkingLocation> getParkingLocation(String parkingLocationId) async {
     DocumentSnapshot documentSnapshot =
-        await parkingLocationCollection.doc(parkingLocationId).get();
+    await parkingLocationCollection.doc(parkingLocationId).get();
     ParkingLocation parkingLocation =
-        ParkingLocation.fromJson(documentSnapshot.data());
+    ParkingLocation.fromJson(documentSnapshot.data());
     return parkingLocation;
   }
 
@@ -81,7 +83,7 @@ class DatabaseService {
 
   Future<Reservation> getReservation(String reservationId) async {
     DocumentSnapshot documentSnapshot =
-        await reservationCollection.doc(reservationId).get();
+    await reservationCollection.doc(reservationId).get();
     Reservation reservation = Reservation.fromJson(documentSnapshot.data());
     return reservation;
   }
@@ -104,11 +106,11 @@ class DatabaseService {
     return parkingLocationCollection
         .snapshots()
         .map((list) => list.docs.map((doc) {
-              final model = ParkingLocation.fromJson(doc.data());
-              // Setting the id value of the Parking Location object.
-              model.id = doc.id;
-              return model;
-            }).toList());
+      final model = ParkingLocation.fromJson(doc.data());
+      // Setting the id value of the Parking Location object.
+      model.id = doc.id;
+      return model;
+    }).toList());
   }
 
   Stream<List<User>> streamUsers() {
@@ -119,26 +121,37 @@ class DatabaseService {
 
   Stream<List<Reservation>> streamReservation(String userId) {
     return reservationCollection
-        .where('User', isEqualTo: userId)
+        .where('User', isEqualTo: userId,).orderBy('StartDate',descending: true)
         .snapshots()
         .map((list) => list.docs.map((doc) {
-              final model = Reservation.fromJson(doc.data());
-              // Setting the id value of the Parking Location object.
-              model.id = doc.id;
-              return model;
-            }).toList());
+      final model = Reservation.fromJson(doc.data());
+      // Setting the id value of the Parking Location object.
+      model.id = doc.id;
+      return model;
+    }).toList());
+  }
+  Stream<List<Reservation>> streamCurrentReservation(String userId) {
+    return reservationCollection
+        .where('StartDate', isLessThan: DateTime.now(),).orderBy('StartDate',descending: true)
+        .snapshots()
+        .map((list) => list.docs.map((doc) {
+      final model = Reservation.fromJson(doc.data());
+      // Setting the id value of the Parking Location object.
+      model.id = doc.id;
+      return model;
+    }).toList());
   }
 
   addReservation(Reservation reservation) {
     return reservationCollection
         .add({
-          'Amount': reservation.amount,
-          'Location': reservation.location,
-          'StartDate': reservation.startDate,
-          'FinishDate': reservation.finishDate,
-          'User': reservation.user
-        })
-        .then((value) => print('Reservation added'))
+      'Amount': reservation.amount,
+      'Location': reservation.location,
+      'StartDate': reservation.startDate,
+      'FinishDate': reservation.finishDate,
+      'User': reservation.user
+    })
+        .then((value) => addPayment(amount: reservation.amount, date: DateTime.now(), reservationId: value.id , userId: reservation.user))
         .catchError((onError) => print(onError));
   }
 
@@ -165,10 +178,10 @@ class DatabaseService {
 
   addFeedback(
       {required int rate,
-      required String string,
-      required DateTime time,
-      required String uid,
-      required String parkingLocationId}) async {
+        required String string,
+        required DateTime time,
+        required String uid,
+        required String parkingLocationId}) async {
     final user = await getUser(uid);
     final data = [
       {
@@ -207,6 +220,15 @@ class DatabaseService {
       'PhoneNum': phoneNum,
 
     }).catchError((onError)=> print(onError));
+  }
+  addPayment({required double amount,required DateTime date, required String reservationId,required String userId}){
+
+    paymentCollection.add({
+      'Amount':amount,
+      'Date':date,
+      'ReservationID':reservationId,
+      'UserID':userId
+    }).catchError((onError)=>print(onError));
   }
 
 }
